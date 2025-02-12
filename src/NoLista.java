@@ -8,6 +8,10 @@ public class NoLista {
         this.prox = prox;
     }
 
+    public NoLista(int valor, NoLista ant) {
+        this(valor, ant, null);
+    }
+
     public NoLista(int valor) {
         this(valor, null, null);
     }

@@ -20,7 +20,7 @@ public class LinkedList {
         while (pointer.getProx() != null)
             pointer = pointer.getProx();
 
-        pointer.setProx(new NoLista(valor));
+        pointer.setProx(new NoLista(valor, pointer));
     }
 
     // calcula o tamanho da lista
@@ -43,6 +43,19 @@ public class LinkedList {
         while (pointer != null) {
             System.out.print(pointer.getValor() + " ");
             pointer = pointer.getProx();
+        }
+    }
+
+    // essa eu fiz mais pra testar se o apontamento dos ant está correto
+    public void printReversed() {
+        NoLista pointer = head;
+        while (pointer.getProx() != null) {
+            pointer = pointer.getProx();
+        }
+
+        while (pointer != null) {
+            System.out.print(pointer.getValor() + " ");
+            pointer = pointer.getAnt();
         }
     }
 
@@ -91,6 +104,8 @@ public class LinkedList {
 
     // análogo à partição de Lomuto
     // funciona em O(n), desconsiderando a travessia na lista inteira para posicionar o pivô
+    // se considerar a travessia inicial acredito que fique O(2n), o que em notação assintótica acaba
+    // virando O(n)
     private int particiona(int p, int r) {
         NoLista pivot = head, pointer_i= head, pointer_j = head;
         int i, k, temp;
@@ -137,6 +152,7 @@ public class LinkedList {
         return i;
     }
 
+    // a chamada inicial para o quickSort deve ser feita passando 0 e n como parâmetros p e r
     public void quickSort(int p, int r) {
         int i;
 
@@ -146,42 +162,47 @@ public class LinkedList {
             quickSort(i + 1, r);
         }
     }
-//
-//    public void shakerSort() {
-//        LinkedList pointer = this, pointer2;
-//        int len = this.len(), temp, j, k;
-//
-//        for (int i = 0; i < len; i ++) {
-//            while (pointer.next != null) {
-//                if (pointer.getValue() > pointer.next.getValue()) {
-//                    temp = pointer.getValue();
-//                    pointer.setValue(pointer.next.getValue());
-//                    pointer.next.setValue(temp);
-//                }
-//                pointer = pointer.next;
-//            }
-//
-//            j = 0;
-//            while (len - j > 1) {
-//                pointer = this;
-//                for (k = 0; k < len - j - 1; k ++) {
-//                    pointer = pointer.next;
-//                }
-//
-//                pointer2 = this;
-//                while (pointer2.next != pointer) {
-//                    pointer2 = pointer2.next;
-//                }
-//
-//                if (pointer.getValue() < pointer2.getValue()) {
-//                    temp = pointer.getValue();
-//                    pointer.setValue(pointer2.getValue());
-//                    pointer2.setValue(temp);
-//                }
-//
-//                j ++;
-//            }
-//        }
-//    }
+
+    public void shakerSort() {
+        NoLista pointer = head;
+        int len = this.len(), temp, j;
+
+        // vai haver n / 2 iterações principais, sendo n o tamanho da lista
+        for (int i = 0; i < len/2; i ++) {
+
+            // essa é a operação normal do bubbleSort, que "empurra" o maior elemento até o final
+            // porém j começa em i pois o shakerSort ordena "nas duas pontas"
+            // então a sublista lista[0:i] (intervalo superior exclusivo) já está ordenada
+            for (j = i; j < len - 1 - i; j ++) {
+                if (pointer.getValor() > pointer.getProx().getValor()) {
+                    temp = pointer.getValor();
+                    pointer.setValor(pointer.getProx().getValor());
+                    pointer.getProx().setValor(temp);
+                }
+                pointer = pointer.getProx();
+            }
+
+            System.out.println("j parou em: " + j);
+
+            // aqui vamos fazer basicamente a mesma operação, mas trazendo o menor elemento para o começo da lista
+            // ponteiro para no primeiro elemento da sublista ordenada do topo, então recuamos 1 para evitar
+            // uma comparação desnecessária
+
+            pointer = pointer.getAnt();
+            for (j --; j > i; j--) {
+                if (pointer.getValor() < pointer.getAnt().getValor()) {
+                    temp = pointer.getValor();
+                    pointer.setValor(pointer.getAnt().getValor());
+                    pointer.getAnt().setValor(temp);
+                }
+                pointer = pointer.getAnt();
+            }
+
+            System.out.println("j parou em: " + j);
+
+            // avançamos o ponteiro aqui ao final para ele já ficar na posição certa para a próxima iteração
+            pointer = pointer.getProx();
+        }
+    }
 
 }
