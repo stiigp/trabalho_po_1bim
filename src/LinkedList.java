@@ -208,13 +208,71 @@ public class LinkedList {
     public void insertionSort() {
         NoLista pointer;
         int i, j, len = this.len(), temp;
+
         for (i = 0; i < len; i ++) {
             pointer = head;
             for (j = 0; j < i; j ++) {
                 pointer = pointer.getProx();
             }
 
-            while (pointer.getAnt() != null && pointer.getValor() > pointer.getAnt().getValor()) {
+            while (pointer.getAnt() != null && pointer.getValor() < pointer.getAnt().getValor()) {
+                temp = pointer.getValor();
+                pointer.setValor(pointer.getAnt().getValor());
+                pointer.getAnt().setValor(temp);
+
+                pointer = pointer.getAnt();
+            }
+        }
+    }
+
+    // essa busca não retorna -1 caso o elemento não seja achado, retorna o índice em que o elemento deveria estar,
+    // já que sabemos que o elemento não será encontrado
+    public int buscaBinaria(int fim, int ele) {
+        // feito para ser usado no binaryInsertionSort, não possui o parâmetro ini, pois a sublista ordenada
+        // sempre vai ser list[0:x]
+        int ini = 0, meio = (ini + fim) / 2, i;
+        NoLista pointer = head;
+
+        for (i = 0; i < meio; i ++)
+            pointer = pointer.getProx();
+
+        while (ini <= fim && pointer.getValor() != ele) {
+
+            if (ele > pointer.getValor())
+                ini = meio + 1;
+            else
+                fim = meio - 1;
+
+            meio = (ini + fim) / 2;
+
+            pointer = head;
+            for (i = 0; i < meio; i ++)
+                pointer = pointer.getProx();
+        }
+
+        pointer = head;
+        for (i = 0; i < meio; i ++)
+            pointer = pointer.getProx();
+
+        // o if existe para retornar a coordenada exata em que o elemento precisa estar
+        if (ele > pointer.getValor())
+            return meio + 1;
+        return meio;
+    }
+
+    public void binaryInsertionSort() {
+        NoLista pointer;
+        int i, j, temp, len = this.len(), pos;
+
+        for (i = 0; i < len; i ++) {
+            pointer = head;
+            for (j = 0; j < i; j ++) {
+                pointer = pointer.getProx();
+            }
+
+            pos = this.buscaBinaria(i, pointer.getValor());
+
+            for (; j > pos; j --) {
                 temp = pointer.getValor();
                 pointer.setValor(pointer.getAnt().getValor());
                 pointer.getAnt().setValor(temp);
