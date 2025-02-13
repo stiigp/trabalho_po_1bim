@@ -7,7 +7,7 @@ public class Main {
         ll.print();
         System.out.println();
         // ll.quickSort(0, ll.len());
-        ll.shakerSort();
+        ll.insertionSort();
         ll.print();
         System.out.println();
         ll.printReversed();
