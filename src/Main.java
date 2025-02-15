@@ -1,13 +1,13 @@
 public class Main {
     public static void main(String[] args) {
-        LinkedList ll = new LinkedList(15);
-        ll.insert(13); ll.insert(11); ll.insert(17);
-        ll.insert(76); ll.insert(45); ll.insert(39); ll.insert(10);
+        LinkedList ll = new LinkedList(0);
+        ll.insert(14); ll.insert(10); ll.insert(11);
+        ll.insert(9); ll.insert(8); ll.insert(4); ll.insert(12);
 
 //        ll.quickSort(0, ll.len());
-        ll.binaryInsertionSort();
+        ll.countingSort();
         ll.print();
-        System.out.println();
+
 
     }
 }

@@ -1,15 +1,19 @@
 public class LinkedList {
 
-    NoLista head;
+    NoLista head, end;
 
     // primeiro construtor do objeto lista, recebe um NoLista
     public LinkedList(NoLista head) {
-        this.head = head;
+        this.head = this.end = head;
     }
 
     // sobrecarga do primeiro construtor, recebe apenas o inteiro que vai constituir o valor da cabeça da lista
     public LinkedList(int valor) {
         this(new NoLista(valor));
+    }
+
+    public void inicializa() {
+        this.head = this.end = null;
     }
 
     // insere ao final da lista
@@ -21,6 +25,7 @@ public class LinkedList {
             pointer = pointer.getProx();
 
         pointer.setProx(new NoLista(valor, pointer));
+        this.end = pointer.getProx();
     }
 
     // calcula o tamanho da lista
@@ -282,4 +287,72 @@ public class LinkedList {
         }
     }
 
+    // retorna o maior elemento da lista
+    // é usado dentro do countingSort
+    private int max() {
+        NoLista pointer = head;
+        int maior = 0;
+        while (pointer != null) {
+            if (pointer.getValor() > maior) {
+                maior = pointer.getValor();
+            }
+            pointer = pointer.getProx();
+        }
+        return maior;
+    }
+
+    // retorna um vetor de contagem tal que arrCount[i] = número de vezes que i aparece na LinkedList
+    private int[] count() {
+        NoLista pointer = head;
+        int[] arrCount = new int[max() + 1];
+
+        while (pointer != null) {
+            // um vetor em java automaticamente é iniciado com o valor 0 em todas as suas posições
+            // portanto pode-se fazer isso sem se preocupar como valor ser lixo
+            arrCount[pointer.getValor()] += 1;
+            pointer = pointer.getProx();
+        }
+
+        return arrCount;
+    }
+
+    // retorna um vetor com os elementos da lista copiados
+    private int[] copiaLista() {
+        int[] arr = new int[len()];
+        NoLista pointer = head;
+        int i = 0;
+
+        while (pointer != null) {
+            arr[i] = pointer.getValor();
+            pointer = pointer.getProx();
+            i ++;
+        }
+
+        return arr;
+    }
+
+    public void countingSort() {
+        NoLista pointer = head, pointer2;
+        int i, j, pos;
+        int[] arrCount = count(), copia;
+
+        // aqui fazemos uma operação no vetor de contagem para usar esses valores como índices ao final do algoritmo
+        // basicamente: pra cada elemento no vetor ele considera quantas das primeiras posições do vetor já estão ocupadas
+        for (i = 1; i < arrCount.length; i ++)
+            arrCount[i] = arrCount[i - 1] + arrCount[i];
+
+        // vamos fazer também uma cópia da lista, pois é necessário para esse algoritmo
+        copia = copiaLista();
+
+        for (i = copia.length - 1; i >= 0; i --) {
+            arrCount[copia[i]] -= 1;
+            pos = arrCount[copia[i]];
+
+            pointer = head;
+            for (j = 0; j < pos; j ++) {
+                pointer = pointer.getProx();
+            }
+            pointer.setValor(copia[i]);
+        }
+    }
 }
