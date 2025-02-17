@@ -3,14 +3,10 @@ public class LinkedList {
     NoLista head, end;
 
     // primeiro construtor do objeto lista, recebe um NoLista
-    public LinkedList(NoLista head) {
-        this.head = this.end = head;
+    public LinkedList() {
+        this.head = this.end = null;
     }
 
-    // sobrecarga do primeiro construtor, recebe apenas o inteiro que vai constituir o valor da cabeça da lista
-    public LinkedList(int valor) {
-        this(new NoLista(valor));
-    }
 
     public void inicializa() {
         this.head = this.end = null;
@@ -21,11 +17,15 @@ public class LinkedList {
         // usa um ponteiro do tipo NoLista
         NoLista pointer = head;
 
-        while (pointer.getProx() != null)
-            pointer = pointer.getProx();
+        if (pointer != null) {
+            while (pointer.getProx() != null)
+                pointer = pointer.getProx();
 
-        pointer.setProx(new NoLista(valor, pointer));
-        this.end = pointer.getProx();
+            pointer.setProx(new NoLista(valor, pointer));
+            this.end = pointer.getProx();
+        } else {
+            this.head = new NoLista(valor);
+        }
     }
 
     // calcula o tamanho da lista
@@ -354,5 +354,32 @@ public class LinkedList {
             }
             pointer.setValor(copia[i]);
         }
+    }
+
+    public void combSort() {
+        double fat = 1.3;
+        int gap = (int) (this.len() / fat), i, temp;
+        NoLista pointer_i, pointer_j;
+
+        while (gap >= 1) {
+            pointer_i = pointer_j = head;
+
+            for (i = 0; i < gap; i ++)
+                pointer_j = pointer_j.getProx();
+
+            while (pointer_j != null) {
+                if (pointer_i.getValor() > pointer_j.getValor()) {
+                    temp = pointer_j.getValor();
+                    pointer_j.setValor(pointer_i.getValor());
+                    pointer_i.setValor(temp);
+                }
+
+                pointer_i = pointer_i.getProx();
+                pointer_j = pointer_j.getProx();
+            }
+
+            gap = (int) (gap / fat);
+        }
+
     }
 }
