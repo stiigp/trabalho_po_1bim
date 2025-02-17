@@ -217,22 +217,23 @@ public class LinkedList {
     }
 
     public void insertionSort() {
-        NoLista pointer;
-        int i, j, len = this.len(), temp;
+        NoLista pointer_i = head.getProx(), pointer_j;
+        int aux;
 
-        for (i = 0; i < len; i ++) {
-            pointer = head;
-            for (j = 0; j < i; j ++) {
-                pointer = pointer.getProx();
+        while (pointer_i != null) {
+
+            aux = pointer_i.getValor();
+            pointer_j = pointer_i;
+
+            while (pointer_j != head && aux < pointer_j.getAnt().getValor()) {
+                pointer_j.setValor(pointer_j.getAnt().getValor());
+
+                pointer_j = pointer_j.getAnt();
             }
 
-            while (pointer.getAnt() != null && pointer.getValor() < pointer.getAnt().getValor()) {
-                temp = pointer.getValor();
-                pointer.setValor(pointer.getAnt().getValor());
-                pointer.getAnt().setValor(temp);
+            pointer_j.setValor(aux);
 
-                pointer = pointer.getAnt();
-            }
+            pointer_i = pointer_i.getProx();
         }
     }
 
