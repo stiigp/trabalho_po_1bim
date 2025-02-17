@@ -6,7 +6,7 @@ public class Main {
         ll.insert(36); ll.insert(19); ll.insert(74); ll.insert(21); ll.insert(42);
 
 //        ll.quickSort(0, ll.len());
-        ll.bubbleSort();
+        ll.gnomeSort();
         ll.print();
 
 

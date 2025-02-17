@@ -398,5 +398,25 @@ public class LinkedList {
         }
     }
 
+    // o gnome lembra um pouco o bubble sort
+    public void gnomeSort() {
+        // pode começar do segundo elemento, pois sempre compara com o elemento atrás dele
+        // caso a lista tenha um elemento só, nada acontece
+        NoLista pointer = head.getProx();
+        int temp;
+
+        while (pointer != null) {
+            if (pointer.getValor() < pointer.getAnt().getValor()) {
+                temp = pointer.getValor();
+                pointer.setValor(pointer.getAnt().getValor());
+                pointer.getAnt().setValor(temp);
+
+                if (pointer.getAnt().getAnt() != null)
+                    pointer = pointer.getAnt();
+            } else
+                pointer = pointer.getProx();
+        }
+
+    }
 
 }
