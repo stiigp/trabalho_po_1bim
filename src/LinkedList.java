@@ -89,21 +89,27 @@ public class LinkedList {
 
     }
 
+    // a implementação das versões mais antigas funciona estritamente em n^2, ou seja, Theta(n^2)
+    // mas ajustei a implementação para parar caso o vetor já esteja ordenado usando a flag swap
     public void bubbleSort() {
         NoLista pointer_i;
-        int len = this.len(), i, j, temp;
+        int len = this.len(), i = 0, j, temp;
+        boolean swapped = true;
 
-        for (i = 0; i < len; i ++) {
+        while (swapped) {
             pointer_i = head;
-
+            swapped = false;
             for (j = 0; j < len - i - 1; j ++) {
                 if (pointer_i.getValor() > pointer_i.getProx().getValor()) {
+                    swapped = true;
                     temp = pointer_i.getProx().getValor();
                     pointer_i.getProx().setValor(pointer_i.getValor());
                     pointer_i.setValor(temp);
                 }
                 pointer_i = pointer_i.getProx();
             }
+
+            i ++;
         }
     }
 
@@ -359,16 +365,26 @@ public class LinkedList {
     public void combSort() {
         double fat = 1.3;
         int gap = (int) (this.len() / fat), i, temp;
+        boolean swapped = true;
         NoLista pointer_i, pointer_j;
 
-        while (gap >= 1) {
+        // em um bubbleSort, usaríamos somente a flag swapped na condição desse while,
+        // porém nesse caso pode ser que não ocorra nenhuma troca E a lista não esteja
+        // ordenada caso o gap seja maior do que 1, portanto ele continua enquanto o gap for maior do que 1
+        // OU ele tenha feito uma troca na última iteração, garantindo que a lista seja ordenada em todos os casos
+        while (gap > 1 || swapped) {
             pointer_i = pointer_j = head;
+            swapped = false;
+
+            if (gap == 0)
+                gap = 1;
 
             for (i = 0; i < gap; i ++)
                 pointer_j = pointer_j.getProx();
 
             while (pointer_j != null) {
                 if (pointer_i.getValor() > pointer_j.getValor()) {
+                    swapped = true;
                     temp = pointer_j.getValor();
                     pointer_j.setValor(pointer_i.getValor());
                     pointer_i.setValor(temp);
@@ -380,6 +396,7 @@ public class LinkedList {
 
             gap = (int) (gap / fat);
         }
-
     }
+
+
 }
