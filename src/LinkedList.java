@@ -517,6 +517,8 @@ public class LinkedList {
 
     }
 
+
+    // primeira chamada deve ser feita com ini = 0 e fim = len - 1
     public void mergeSort(int ini, int fim) {
         int meio = (ini + fim) / 2;
         if (ini < fim) {
@@ -524,6 +526,50 @@ public class LinkedList {
             mergeSort(meio + 1, fim);
 
             merge(ini, meio, fim);
+        }
+    }
+
+    public void shellSort() {
+        NoLista pointer1, pointer2;
+        int gap = this.len() / 2, i, temp;
+
+        while (gap >= 1) {
+            pointer1 = head;
+
+            // posicionando o ponteiro no gap
+            for (i = 0; i < gap; i ++)
+                pointer1 = pointer1.getProx();
+
+            // enquanto não chegar no final da lista com o pointer1
+            while (pointer1 != null) {
+                pointer2 = pointer1;
+                temp = pointer1.getValor();
+
+                // fazendo o posicionamento inicial do pointer2
+                // "um elemento" atrás do pointer1 (na sublista)
+                for (i = 0; i < gap && pointer2 != null; i ++) {
+                    pointer2 = pointer2.getAnt();
+                }
+
+                // caminha até acabar a sublista ou até encontrar a posição correta na sublista ordenada
+                // reordenando os elementos
+                while (pointer2 != null && pointer2.getValor() > temp) {
+                    pointer1.setValor(pointer2.getValor());
+                    pointer1 = pointer2;
+
+                    for (i = 0; i < gap && pointer2 != null; i ++) {
+                        pointer2 = pointer2.getAnt();
+                    }
+                }
+
+                // escreve o valor do pointer1 inicial no lugar certo dentro da sublista
+                pointer1.setValor(temp);
+
+                pointer1 = pointer1.getProx();
+            }
+
+            // refaz o processo com o gap menor
+            gap /= 2;
         }
     }
 
