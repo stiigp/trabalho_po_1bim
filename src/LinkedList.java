@@ -1,12 +1,27 @@
 public class LinkedList {
 
-    NoLista head, end;
+    private NoLista head, end;
 
     // primeiro construtor do objeto lista, recebe um NoLista
     public LinkedList() {
         this.head = this.end = null;
     }
 
+    public NoLista getHead() {
+        return head;
+    }
+
+    public void setHead(NoLista head) {
+        this.head = head;
+    }
+
+    public NoLista getEnd() {
+        return end;
+    }
+
+    public void setEnd(NoLista end) {
+        this.end = end;
+    }
 
     public void inicializa() {
         this.head = this.end = null;
@@ -417,7 +432,99 @@ public class LinkedList {
             } else
                 pointer = pointer.getProx();
         }
+    }
 
+    private void merge(int ini, int meio, int fim) {
+        // intercalar duas sublistas
+        // sublista A[ini:meio] com sublista B[meio + 1:fim]
+
+        LinkedList A = new LinkedList(), B = new LinkedList();
+        NoLista pointer = this.head;
+        int i = 0, lenA, lenB;
+
+        // posicionamento inicial da lista
+        while (i < ini) {
+            pointer = pointer.getProx();
+            i ++;
+        }
+
+        // construindo as duas sublistas
+
+        // por mais que seja esquisito, precisamos que seja "<=", pois no caso base da recursão dá merda se for i < meio
+        // no caso da fusão de duas listas de 1 elemento, chamaríamos algo como merge(0, 0, 1)
+        // e se fosse i < meio a sublista de dois elementos não seria dividida e seria retornada na mesma ordem
+        // por isso é importante fazer teste de mesa do caso-base e precisamos de i <= meio
+        while (i <= meio) {
+            A.insert(pointer.getValor());
+            pointer = pointer.getProx();
+            i ++;
+        }
+
+        while (i <= fim) {
+            B.insert(pointer.getValor());
+            pointer = pointer.getProx();
+            i ++;
+        }
+
+        // voltando o ponteiro para a posição ini
+        pointer = head;
+        i = 0;
+        while (i < ini) {
+            pointer = pointer.getProx();
+            i ++;
+        }
+
+        // fazemos isso para evitar recalcular o len toda iteração, pois isso tornaria
+        // o algoritmo extremamente ineficaz
+        lenA = A.len();
+        lenB = B.len();
+
+        while (lenA > 0 && lenB > 0) {
+            if (A.getHead().getValor() < B.getHead().getValor()) {
+                pointer.setValor(A.getHead().getValor());
+
+                // avançando o head da sublista
+                A.setHead(A.getHead().getProx());
+                lenA --;
+            } else {
+                pointer.setValor(B.getHead().getValor());
+
+                B.setHead(B.getHead().getProx());
+                lenB --;
+            }
+
+            pointer = pointer.getProx();
+        }
+
+        while (lenA > 0) {
+            pointer.setValor(A.getHead().getValor());
+
+            // avançando o head da sublista
+            A.setHead(A.getHead().getProx());
+            lenA --;
+
+            pointer = pointer.getProx();
+        }
+
+        while (lenB > 0) {
+            pointer.setValor(B.getHead().getValor());
+
+            B.setHead(B.getHead().getProx());
+            lenB --;
+
+            pointer = pointer.getProx();
+        }
+
+    }
+
+    public void mergeSort(int ini, int fim) {
+        int meio = (ini + fim) / 2;
+        if (ini < fim) {
+            mergeSort(ini, meio);
+            mergeSort(meio + 1, fim);
+
+            merge(ini, meio, fim);
+        }
     }
 
 }
