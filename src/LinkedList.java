@@ -254,7 +254,7 @@ public class LinkedList {
 
     // essa busca não retorna -1 caso o elemento não seja achado, retorna o índice em que o elemento deveria estar,
     // já que sabemos que o elemento não será encontrado
-    public int buscaBinaria(int fim, int ele) {
+    private int buscaBinaria(int fim, int ele) {
         // feito para ser usado no binaryInsertionSort, não possui o parâmetro ini, pois a sublista ordenada
         // sempre vai ser list[0:x]
         int ini = 0, meio = (ini + fim) / 2, i;
@@ -517,7 +517,6 @@ public class LinkedList {
 
     }
 
-
     // primeira chamada deve ser feita com ini = 0 e fim = len - 1
     public void mergeSort(int ini, int fim) {
         int meio = (ini + fim) / 2;
@@ -573,7 +572,6 @@ public class LinkedList {
         }
     }
 
-
     private int algarismoK(int num, int k) {
         /**
          * retorna o k-ésimo algarismo do número (da direita para a esquerda)
@@ -592,7 +590,7 @@ public class LinkedList {
         return algarismo;
     }
 
-    public int numeroDeAlgarismos(int num) {
+    private int numeroDeAlgarismos(int num) {
         int count = 0, ultimoAlgarismo;
 
         while (num > 0) {
@@ -626,6 +624,7 @@ public class LinkedList {
 
         return arrCount;
     }
+
     private void countingSortAlgarismoK(int k) {
         NoLista pointer = head, pointer2;
         int i, j, pos, algarismo;
@@ -662,6 +661,54 @@ public class LinkedList {
 
         for (i = 0; i < numero_maximo_algarismos; i ++)
             countingSortAlgarismoK(i + 1);
+
+    }
+
+    private int minRun(int len) {
+        /*
+        * minRun = 6 bits mais significativos de len + 1 caso algum dos bits menos significativos seja 1
+        * */
+        int r = 0;
+
+        while (len >= 64) { // vamos remover os bits menos significativos até sobrarem só os 6 mais significativos
+            r |= (len & 1); // r captura o bit menos significativo para cumprir que se algum dos menos significativos for 1
+            len >>= 1; // isso aqui desloca um bit para a direita (equivalente a len = len >> 1)
+        }
+
+        return len + r;
+    }
+
+    private void timInsertionSort(int ini, int fim) {
+        /*
+        * é o insertionSort dentro de um intervalo especifico da lista.
+        * usado para ordenar os run's do timSort
+        * */
+        NoLista pointer_i = head, pointer_j;
+        int i, aux, j;
+
+        // uso "<=" para fazer ele ir 1 elemento pra frente do inicial
+        // pois não precisamos fazer comparação no primeiro elemento
+        for (i = 0; i <= ini; i ++)
+            pointer_i = pointer_i.getProx();
+
+        for (; i < fim; i ++) {
+            aux = pointer_i.getValor();
+            pointer_j = pointer_i;
+            j = i;
+
+            while (j > ini && pointer_j.getAnt().getValor() > aux) {
+                pointer_j.setValor(pointer_j.getAnt().getValor());
+                pointer_j = pointer_j.getAnt();
+                j --;
+            }
+
+            pointer_j.setValor(aux);
+
+            pointer_i = pointer_i.getProx();
+        }
+    }
+
+    public void timSort() {
 
     }
 
