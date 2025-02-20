@@ -8,7 +8,8 @@ public class Main {
 
 //        ll.quickSort(0, ll.len());
 //        ll.mergeSort(0, ll.len() - 1);
-        ll.shellSort();
+        ll.radixSort();
+        System.out.println();
         ll.print();
     }
 }

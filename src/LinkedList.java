@@ -573,4 +573,96 @@ public class LinkedList {
         }
     }
 
+
+    private int algarismoK(int num, int k) {
+        /**
+         * retorna o k-ésimo algarismo do número (da direita para a esquerda)
+         * */
+        int i, algarismo = 0;
+
+        for (i = 0; i < k && num >= 0; i ++) {
+            algarismo = num % 10;
+            num -= algarismo;
+            num /= 10;
+        }
+
+        if (num < 0)
+            algarismo = 0;
+
+        return algarismo;
+    }
+
+    public int numeroDeAlgarismos(int num) {
+        int count = 0, ultimoAlgarismo;
+
+        while (num > 0) {
+            ultimoAlgarismo = num % 10;
+            num -= ultimoAlgarismo;
+            num /= 10;
+
+            count ++;
+        }
+
+        return count;
+    }
+
+    private int[] radixCount(int k) {
+        /**
+         * retorna um array de contagem baseado no k-ésimo algarismo do número (da direita para a esquerda)
+         * */
+        int[] arrCount = new int[this.max()];
+        NoLista pointer = head;
+        int num;
+
+        while (pointer != null) {
+            num = pointer.getValor();
+
+            num = algarismoK(num, k);
+
+            arrCount[num] ++;
+
+            pointer = pointer.getProx();
+        }
+
+        return arrCount;
+    }
+    private void countingSortAlgarismoK(int k) {
+        NoLista pointer = head, pointer2;
+        int i, j, pos, algarismo;
+        int[] arrCount = radixCount(k), copia;
+
+//        for (int ele: arrCount)
+//            System.out.print(ele + " ");
+
+        // aqui fazemos uma operação no vetor de contagem para usar esses valores como índices ao final do algoritmo
+        // basicamente: pra cada elemento no vetor ele considera quantas das primeiras posições do vetor já estão ocupadas
+        for (i = 1; i < arrCount.length; i ++)
+            arrCount[i] = arrCount[i - 1] + arrCount[i];
+
+        // vamos fazer também uma cópia da lista, pois é necessário para esse algoritmo
+        copia = copiaLista();
+
+        for (i = copia.length - 1; i >= 0; i --) {
+            algarismo = algarismoK(copia[i], k);
+
+            arrCount[algarismo] -= 1;
+            pos = arrCount[algarismo];
+
+            pointer = head;
+            for (j = 0; j < pos; j ++) {
+                pointer = pointer.getProx();
+            }
+
+            pointer.setValor(copia[i]);
+        }
+    }
+
+    public void radixSort() {
+        int numero_maximo_algarismos = numeroDeAlgarismos(max()), i;
+
+        for (i = 0; i < numero_maximo_algarismos; i ++)
+            countingSortAlgarismoK(i + 1);
+
+    }
+
 }
