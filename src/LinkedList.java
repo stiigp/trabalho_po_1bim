@@ -670,7 +670,7 @@ public class LinkedList {
         * */
         int r = 0;
 
-        while (len >= 64) { // vamos remover os bits menos significativos até sobrarem só os 6 mais significativos
+        while (len >= 32) { // vamos remover os bits menos significativos até sobrarem só os 6 mais significativos
             r |= (len & 1); // r captura o bit menos significativo para cumprir que se algum dos menos significativos for 1
             len >>= 1; // isso aqui desloca um bit para a direita (equivalente a len = len >> 1)
         }
@@ -708,8 +708,89 @@ public class LinkedList {
         }
     }
 
-    public void timSort() {
+    private void inverteSubLista(int ini, int fim) {
+        /**
+         * inverte a sublista no invertalo [ini:fim] (intervalo superior inclusivo)
+         * isso será usado caso a run do timSort esteja ordenada em ordem decrescente
+         */
+        NoLista pointer_i = head, pointer_j = head;
+        int i, temp;
 
+        for (i = 0; i < ini; i ++) {
+            pointer_i = pointer_i.getProx();
+        }
+
+        pointer_j = pointer_i;
+        for (; i < fim; i ++)
+            pointer_j = pointer_j.getProx();
+
+        while (pointer_i != pointer_j) {
+            temp = pointer_j.getValor();
+            pointer_j.setValor(pointer_i.getValor());
+            pointer_i.setValor(temp);
+
+            pointer_i = pointer_i.getProx();
+
+            if (pointer_i != pointer_j)
+                pointer_j = pointer_j.getAnt();
+        }
     }
 
+    public void timSort() {
+        int minRun = this.minRun(this.len());
+//        System.out.println(minRun);
+        PilhaPair pilha = new PilhaPair();
+        Pair pair;
+        NoLista pointer = head, pointeraux;
+        int i = 0, inicioRun;
+
+        while (pointer != null) {
+
+            // começando a run
+            inicioRun = i;
+
+            // avançamos esse ponteiro pois o tamanho mínimo de qualquer run é 2
+            // (toda lista de 2 elementos está sempre ordenada, seja crescente ou decrescente)
+            pointeraux = pointer;
+            pointer = pointer.getProx();
+            i ++;
+
+            if (pointer != null && pointer.getValor() >= pointer.getAnt().getValor()) {
+                // nesse caso a run começa crescente
+                while (pointer != null && pointer.getValor() > pointer.getAnt().getValor()) {
+                    pointeraux = pointer;
+                    pointer = pointer.getProx();
+                    i ++;
+                }
+            } else if (pointer != null && pointer.getValor() < pointer.getAnt().getValor()) {
+                // nesse caso a run começa decrescente
+                while (pointer != null && pointer.getValor() < pointer.getAnt().getValor()) {
+                    pointeraux = pointer;
+                    pointer = pointer.getProx();
+                    i ++;
+                }
+            }
+
+            if (i - inicioRun >= minRun) {
+                // nesse caso a run está inteira ordenada, não sabemos em qual ordem -> vamos conferir os valores
+                System.out.println("a");
+                 if (pointeraux.getValor() < pointeraux.getAnt().getValor())
+                     // caso seja decrescente inverte a lista
+                    inverteSubLista(inicioRun, i - 1);
+                 // caso contrário simplesmente não faz nada
+            } else {
+                // sublista não está ordenada, vamos incluir mais elementos na sublista até chegar em minRun
+                // e então rodar o insertionSort
+                while (pointer != null && i - inicioRun < minRun) {
+                    i ++;
+                    pointer = pointer.getProx();
+                }
+                System.out.println("Ordenando de " + inicioRun + " até " + i);
+                timInsertionSort(inicioRun, i);
+            }
+
+            // adicionando as coordenadas na pilha de pairs
+            pilha.push(inicioRun, i);
+        }
+    }
 }
