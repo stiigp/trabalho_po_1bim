@@ -1,26 +1,26 @@
 public class NoLista {
-    private int valor;
+    private double valor;
     private NoLista ant, prox;
 
-    public NoLista(int valor, NoLista ant, NoLista prox) {
+    public NoLista(double valor, NoLista ant, NoLista prox) {
         this.valor = valor;
         this.ant = ant;
         this.prox = prox;
     }
 
-    public NoLista(int valor, NoLista ant) {
+    public NoLista(double valor, NoLista ant) {
         this(valor, ant, null);
     }
 
-    public NoLista(int valor) {
+    public NoLista(double valor) {
         this(valor, null, null);
     }
 
-    public int getValor() {
+    public double getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(double valor) {
         this.valor = valor;
     }
 

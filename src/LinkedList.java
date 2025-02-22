@@ -28,7 +28,7 @@ public class LinkedList {
     }
 
     // insere ao final da lista
-    public void insert(int valor) {
+    public void insert(double valor) {
         // usa um ponteiro do tipo NoLista
         NoLista pointer = head;
 
@@ -81,7 +81,7 @@ public class LinkedList {
 
     public void selectionSort() {
         NoLista pointer_i = head, pointer_j, menor;
-        int menor_val;
+        double menor_val;
 
         while (pointer_i.getProx() != null) {
             menor_val = pointer_i.getValor();
@@ -108,7 +108,10 @@ public class LinkedList {
     // mas ajustei a implementação para parar caso o vetor já esteja ordenado usando a flag swap
     public void bubbleSort() {
         NoLista pointer_i;
-        int len = this.len(), i = 0, j, temp;
+        int len = this.len();
+        int i = 0;
+        int j;
+        double temp;
         boolean swapped = true;
 
         while (swapped) {
@@ -134,7 +137,9 @@ public class LinkedList {
     // virando O(n)
     private int particiona(int p, int r) {
         NoLista pivot = head, pointer_i= head, pointer_j = head;
-        int i, k, temp;
+        int i;
+        int k;
+        double temp;
 
         // colocando o pivô na última posição
         for (k = 0; k < r - 1; k ++) {
@@ -191,7 +196,9 @@ public class LinkedList {
 
     public void shakerSort() {
         NoLista pointer = head;
-        int len = this.len(), temp, j;
+        int len = this.len();
+        double temp;
+        int j;
 
         // vai haver n / 2 iterações principais, sendo n o tamanho da lista
         for (int i = 0; i < len/2; i ++) {
@@ -233,7 +240,7 @@ public class LinkedList {
 
     public void insertionSort() {
         NoLista pointer_i = head.getProx(), pointer_j;
-        int aux;
+        double aux;
 
         while (pointer_i != null) {
 
@@ -254,7 +261,7 @@ public class LinkedList {
 
     // essa busca não retorna -1 caso o elemento não seja achado, retorna o índice em que o elemento deveria estar,
     // já que sabemos que o elemento não será encontrado
-    private int buscaBinaria(int fim, int ele) {
+    private int buscaBinaria(int fim, double ele) {
         // feito para ser usado no binaryInsertionSort, não possui o parâmetro ini, pois a sublista ordenada
         // sempre vai ser list[0:x]
         int ini = 0, meio = (ini + fim) / 2, i;
@@ -289,7 +296,11 @@ public class LinkedList {
 
     public void binaryInsertionSort() {
         NoLista pointer;
-        int i, j, temp, len = this.len(), pos;
+        int i;
+        int j;
+        double temp;
+        int len = this.len();
+        int pos;
 
         for (i = 0; i < len; i ++) {
             pointer = head;
@@ -311,9 +322,9 @@ public class LinkedList {
 
     // retorna o maior elemento da lista
     // é usado dentro do countingSort
-    private int max() {
+    private double max() {
         NoLista pointer = head;
-        int maior = 0;
+        double maior = 0;
         while (pointer != null) {
             if (pointer.getValor() > maior) {
                 maior = pointer.getValor();
@@ -326,12 +337,12 @@ public class LinkedList {
     // retorna um vetor de contagem tal que arrCount[i] = número de vezes que i aparece na LinkedList
     private int[] count() {
         NoLista pointer = head;
-        int[] arrCount = new int[max() + 1];
+        int[] arrCount = new int[(int)max() + 1];
 
         while (pointer != null) {
             // um vetor em java automaticamente é iniciado com o valor 0 em todas as suas posições
             // portanto pode-se fazer isso sem se preocupar como valor ser lixo
-            arrCount[pointer.getValor()] += 1;
+            arrCount[(int) pointer.getValor()] += 1;
             pointer = pointer.getProx();
         }
 
@@ -339,8 +350,8 @@ public class LinkedList {
     }
 
     // retorna um vetor com os elementos da lista copiados
-    private int[] copiaLista() {
-        int[] arr = new int[len()];
+    private double[] copiaLista() {
+        double[] arr = new double[len()];
         NoLista pointer = head;
         int i = 0;
 
@@ -356,7 +367,8 @@ public class LinkedList {
     public void countingSort() {
         NoLista pointer = head, pointer2;
         int i, j, pos;
-        int[] arrCount = count(), copia;
+        int[] arrCount = count();
+        double[] copia;
 
         // aqui fazemos uma operação no vetor de contagem para usar esses valores como índices ao final do algoritmo
         // basicamente: pra cada elemento no vetor ele considera quantas das primeiras posições do vetor já estão ocupadas
@@ -367,8 +379,8 @@ public class LinkedList {
         copia = copiaLista();
 
         for (i = copia.length - 1; i >= 0; i --) {
-            arrCount[copia[i]] -= 1;
-            pos = arrCount[copia[i]];
+            arrCount[(int)copia[i]] -= 1;
+            pos = arrCount[(int)copia[i]];
 
             pointer = head;
             for (j = 0; j < pos; j ++) {
@@ -380,7 +392,9 @@ public class LinkedList {
 
     public void combSort() {
         double fat = 1.3;
-        int gap = (int) (this.len() / fat), i, temp;
+        int gap = (int) (this.len() / fat);
+        int i;
+        double temp;
         boolean swapped = true;
         NoLista pointer_i, pointer_j;
 
@@ -419,7 +433,7 @@ public class LinkedList {
         // pode começar do segundo elemento, pois sempre compara com o elemento atrás dele
         // caso a lista tenha um elemento só, nada acontece
         NoLista pointer = head.getProx();
-        int temp;
+        double temp;
 
         while (pointer != null) {
             if (pointer.getValor() < pointer.getAnt().getValor()) {
@@ -466,7 +480,8 @@ public class LinkedList {
             i ++;
         }
 
-        // voltando o ponteiro para a posição ini
+        // voltando o ponteiro para a posição ini (não é possível só recuá-lo pois ele chega em null)
+        // podemos usar um segundo ponteiro (ant) para evitar essa caminhada inteira novamente
         pointer = head;
         i = 0;
         while (i < ini) {
@@ -530,7 +545,9 @@ public class LinkedList {
 
     public void shellSort() {
         NoLista pointer1, pointer2;
-        int gap = this.len() / 2, i, temp;
+        int gap = this.len() / 2;
+        int i;
+        double temp;
 
         while (gap >= 1) {
             pointer1 = head;
@@ -572,11 +589,12 @@ public class LinkedList {
         }
     }
 
-    private int algarismoK(int num, int k) {
+    private double algarismoK(double num, int k) {
         /**
          * retorna o k-ésimo algarismo do número (da direita para a esquerda)
          * */
-        int i, algarismo = 0;
+        int i;
+        double algarismo = 0;
 
         for (i = 0; i < k && num >= 0; i ++) {
             algarismo = num % 10;
@@ -590,8 +608,9 @@ public class LinkedList {
         return algarismo;
     }
 
-    private int numeroDeAlgarismos(int num) {
-        int count = 0, ultimoAlgarismo;
+    private int numeroDeAlgarismos(double num) {
+        int count = 0;
+        double ultimoAlgarismo;
 
         while (num > 0) {
             ultimoAlgarismo = num % 10;
@@ -608,16 +627,16 @@ public class LinkedList {
         /**
          * retorna um array de contagem baseado no k-ésimo algarismo do número (da direita para a esquerda)
          * */
-        int[] arrCount = new int[this.max()];
+        int[] arrCount = new int[(int)this.max()];
         NoLista pointer = head;
-        int num;
+        double num;
 
         while (pointer != null) {
             num = pointer.getValor();
 
             num = algarismoK(num, k);
 
-            arrCount[num] ++;
+            arrCount[(int)num] ++;
 
             pointer = pointer.getProx();
         }
@@ -627,8 +646,12 @@ public class LinkedList {
 
     private void countingSortAlgarismoK(int k) {
         NoLista pointer = head, pointer2;
-        int i, j, pos, algarismo;
-        int[] arrCount = radixCount(k), copia;
+        int i;
+        int j;
+        int pos;
+        double algarismo;
+        int[] arrCount = radixCount(k);
+        double[] copia;
 
 //        for (int ele: arrCount)
 //            System.out.print(ele + " ");
@@ -644,8 +667,8 @@ public class LinkedList {
         for (i = copia.length - 1; i >= 0; i --) {
             algarismo = algarismoK(copia[i], k);
 
-            arrCount[algarismo] -= 1;
-            pos = arrCount[algarismo];
+            arrCount[(int)algarismo] -= 1;
+            pos = arrCount[(int)algarismo];
 
             pointer = head;
             for (j = 0; j < pos; j ++) {
@@ -684,7 +707,9 @@ public class LinkedList {
         * usado para ordenar os run's do timSort
         * */
         NoLista pointer_i = head, pointer_j;
-        int i, aux, j;
+        int i;
+        double aux;
+        int j;
 
         // uso "<=" para fazer ele ir 1 elemento pra frente do inicial
         // pois não precisamos fazer comparação no primeiro elemento
@@ -714,7 +739,8 @@ public class LinkedList {
          * isso será usado caso a run do timSort esteja ordenada em ordem decrescente
          */
         NoLista pointer_i = head, pointer_j = head;
-        int i, temp;
+        int i;
+        double temp;
 
         for (i = 0; i < ini; i ++) {
             pointer_i = pointer_i.getProx();
@@ -801,6 +827,43 @@ public class LinkedList {
                 merge(pair2.getFirst(), pair2.getSecond(), pair1.getSecond());
 
                 pilha.push(pair2.getFirst(), pair1.getSecond());
+            }
+        }
+    }
+
+    public void bucketSort() {
+        /**
+         * o bucketSort foi feito para ser usado em números decimais menores que 1,
+         * portanto vou alterar a classe NoLista para conter um double ao invés de int,
+         * acredito que isso não vá prejudicar outras ordenações
+         * */
+
+        // declarando o vetor de buckets que será utilizado nas ordenações
+        // cada bucket é uma LinkedList
+        LinkedList vet[] = new LinkedList[10];
+        NoLista pointer1 = head, pointer2;
+        int indice;
+
+        // temos também que inicializar cada lista dentro desse vetor
+        for (indice = 0; indice < 10; indice ++)
+            vet[indice] = new LinkedList();
+
+        while (pointer1 != null) {
+            indice = (int) (pointer1.getValor() * 10);
+            vet[indice].insert(pointer1.getValor());
+
+            pointer1 = pointer1.getProx();
+        }
+
+        pointer1 = head;
+        for (indice = 0; indice < 10; indice ++) {
+            vet[indice].insertionSort();
+            pointer2 = vet[indice].getHead();
+
+            while (pointer2 != null) {
+                pointer1.setValor(pointer2.getValor());
+                pointer2 = pointer2.getProx();
+                pointer1 = pointer1.getProx();
             }
         }
     }
