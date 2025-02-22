@@ -740,7 +740,7 @@ public class LinkedList {
         int minRun = this.minRun(this.len());
 //        System.out.println(minRun);
         PilhaPair pilha = new PilhaPair();
-        Pair pair;
+        Pair pair1, pair2;
         NoLista pointer = head, pointeraux;
         int i = 0, inicioRun;
 
@@ -790,7 +790,18 @@ public class LinkedList {
             }
 
             // adicionando as coordenadas na pilha de pairs
-            pilha.push(inicioRun, i);
+            pilha.push(inicioRun, i - 1);
+        }
+
+        while (pilha.getInicio() != null) {
+            pair1 = pilha.pop().getPair();
+            if (pilha.getInicio() != null) {
+                pair2 = pilha.pop().getPair();
+
+                merge(pair2.getFirst(), pair2.getSecond(), pair1.getSecond());
+
+                pilha.push(pair2.getFirst(), pair1.getSecond());
+            }
         }
     }
 }

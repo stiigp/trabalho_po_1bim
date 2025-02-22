@@ -1,37 +1,37 @@
 public class Main {
     public static void main(String[] args) {
         LinkedList ll = new LinkedList();
-        ll.insert(1);
-        ll.insert(5);
-        ll.insert(6);
-        ll.insert(7);
-        ll.insert(8);
-        ll.insert(9);
-        ll.insert(10);
-        ll.insert(11);
-        ll.insert(12);
-        ll.insert(13);
-        ll.insert(14);
-        ll.insert(15);
-        ll.insert(16);
+        ll.insert(84);
         ll.insert(17);
-        ll.insert(18);
-        ll.insert(19);
-        ll.insert(20);
+        ll.insert(96);
+        ll.insert(50);
+        ll.insert(34);
+        ll.insert(12);
+        ll.insert(67);
+        ll.insert(89);
         ll.insert(23);
-        ll.insert(24);
-        ll.insert(25);
-        ll.insert(26);
-        ll.insert(27);
-        ll.insert(28);
+        ll.insert(78);
+        ll.insert(91);
+        ll.insert(10);
+        ll.insert(56);
+        ll.insert(44);
+        ll.insert(35);
         ll.insert(29);
-        ll.insert(30);
-        ll.insert(31);
-        ll.insert(32);
-        ll.insert(33);
+        ll.insert(60);
+        ll.insert(80);
+        ll.insert(5);
+        ll.insert(38);
+        ll.insert(41);
+        ll.insert(92);
+        ll.insert(47);
+        ll.insert(26);
+        ll.insert(74);
+        ll.insert(19);
+        ll.insert(83);
+        ll.insert(54);
         ll.insert(62);
         ll.insert(71);
-        ll.insert(78);
+        ll.insert(39);
         ll.insert(21);
         ll.insert(100);
         ll.insert(31);
@@ -102,6 +102,7 @@ public class Main {
         ll.insert(94);
         ll.insert(69);
         ll.insert(0);
+
 
 
 
