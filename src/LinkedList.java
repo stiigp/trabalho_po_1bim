@@ -590,9 +590,9 @@ public class LinkedList {
     }
 
     private double algarismoK(double num, int k) {
-        /**
-         * retorna o k-ésimo algarismo do número (da direita para a esquerda)
-         * */
+        /*
+          retorna o k-ésimo algarismo do número (da direita para a esquerda)
+          */
         int i;
         double algarismo = 0;
 
@@ -624,9 +624,9 @@ public class LinkedList {
     }
 
     private int[] radixCount(int k) {
-        /**
-         * retorna um array de contagem baseado no k-ésimo algarismo do número (da direita para a esquerda)
-         * */
+        /*
+          retorna um array de contagem baseado no k-ésimo algarismo do número (da direita para a esquerda)
+          */
         int[] arrCount = new int[(int)this.max()];
         NoLista pointer = head;
         double num;
@@ -734,9 +734,9 @@ public class LinkedList {
     }
 
     private void inverteSubLista(int ini, int fim) {
-        /**
-         * inverte a sublista no invertalo [ini:fim] (intervalo superior inclusivo)
-         * isso será usado caso a run do timSort esteja ordenada em ordem decrescente
+        /*
+          inverte a sublista no invertalo [ini:fim] (intervalo superior inclusivo)
+          isso será usado caso a run do timSort esteja ordenada em ordem decrescente
          */
         NoLista pointer_i = head, pointer_j = head;
         int i;
@@ -832,15 +832,15 @@ public class LinkedList {
     }
 
     public void bucketSort() {
-        /**
-         * o bucketSort foi feito para ser usado em números decimais menores que 1,
-         * portanto vou alterar a classe NoLista para conter um double ao invés de int,
-         * acredito que isso não vá prejudicar outras ordenações
-         * */
+        /*
+          o bucketSort foi feito para ser usado em números decimais menores que 1,
+          portanto vou alterar a classe NoLista para conter um double ao invés de int,
+          acredito que isso não vá prejudicar outras ordenações
+          */
 
         // declarando o vetor de buckets que será utilizado nas ordenações
         // cada bucket é uma LinkedList
-        LinkedList vet[] = new LinkedList[10];
+        LinkedList[] vet = new LinkedList[10];
         NoLista pointer1 = head, pointer2;
         int indice;
 
@@ -865,6 +865,81 @@ public class LinkedList {
                 pointer2 = pointer2.getProx();
                 pointer1 = pointer1.getProx();
             }
+        }
+    }
+
+    private int pai(int indiceFilho) {
+        return indiceFilho / 2;
+    }
+
+    private int filhoEsq(int indicePai) {
+        return indicePai * 2 + 1;
+    }
+
+    private int filhoDir(int indicePai) {
+        return indicePai * 2 + 2;
+    }
+
+    private void buildHeap(int indiceAtual, int heapSize) {
+        NoLista pi = head, pj;
+        int i, j, temp;
+        for (i = 0; i < indiceAtual; i ++)
+            pi = pi.getProx();
+
+
+        if (filhoEsq(indiceAtual) < heapSize) {
+            // realiza a chamada recursiva primeiro, abordagem "de baixo pra cima" na árvore
+            buildHeap(filhoEsq(indiceAtual), heapSize);
+
+            // comparando com o filho esquerdo
+            pj = pi;
+            for (j = i; j < filhoEsq(indiceAtual); j ++)
+                pj = pj.getProx();
+
+            if (pj.getValor() > pi.getValor()) {
+                // se filho esquerdo for maior, faz a troca
+                temp = (int) pi.getValor();
+                pi.setValor(pj.getValor());
+                pj.setValor(temp);
+            }
+        }
+
+
+        if (filhoDir(indiceAtual) < heapSize) {
+            // realiza a chamada recursiva primeiro, abordagem "de baixo pra cima" na árvore
+            buildHeap(filhoDir(indiceAtual), heapSize);
+
+            //comparando com o filho direito
+            pj = pi;
+            for (j = i; j < filhoDir(indiceAtual); j ++)
+                pj = pj.getProx();
+
+            if (pj.getValor() > pi.getValor()) {
+                // se filho esquerdo for maior, faz a troca
+                temp = (int) pi.getValor();
+                pi.setValor(pj.getValor());
+                pj.setValor(temp);
+            }
+        }
+    }
+
+    public void heapSort() {
+        int i, len = this.len(), j;
+        double temp;
+        NoLista pointer;
+        for (i = 0; i < len; i ++) {
+            // constroi o heap
+            buildHeap(0, len - i);
+
+            // caminha o ponteiro do fim para o fim do heap
+            pointer = this.end;
+            for (j = 0; j < i; j ++)
+                pointer = pointer.getAnt();
+
+            // realiza o swap
+            temp = this.head.getValor();
+            this.head.setValor(pointer.getValor());
+            pointer.setValor(temp);
         }
     }
 }

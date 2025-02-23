@@ -108,33 +108,39 @@ public class Main {
 
         // essa aqui também foi gerada pelo chat, para testar o bucketSort, que foi feito para números decimais
         // menores que 1
-        ll.insert(0.84);
-        ll.insert(0.17);
-        ll.insert(0.96);
-        ll.insert(0.50);
-        ll.insert(0.34);
-        ll.insert(0.12);
-        ll.insert(0.67);
-        ll.insert(0.89);
-        ll.insert(0.23);
-        ll.insert(0.78);
-        ll.insert(0.91);
-        ll.insert(0.10);
-        ll.insert(0.56);
-        ll.insert(0.44);
-        ll.insert(0.35);
-        ll.insert(0.29);
-        ll.insert(0.60);
-        ll.insert(0.80);
-        ll.insert(0.05);
-        ll.insert(0.38);
+//        ll.insert(0.84);
+//        ll.insert(0.17);
+//        ll.insert(0.96);
+//        ll.insert(0.50);
+//        ll.insert(0.34);
+//        ll.insert(0.12);
+//        ll.insert(0.67);
+//        ll.insert(0.89);
+//        ll.insert(0.23);
+//        ll.insert(0.78);
+//        ll.insert(0.91);
+//        ll.insert(0.10);
+//        ll.insert(0.56);
+//        ll.insert(0.44);
+//        ll.insert(0.35);
+//        ll.insert(0.29);
+//        ll.insert(0.60);
+//        ll.insert(0.80);
+//        ll.insert(0.05);
+//        ll.insert(0.38);
 
 
+        ll.insert(15);
+        ll.insert(13);
+        ll.insert(2);
+        ll.insert(78);
+        ll.insert(5);
+        ll.insert(89);
 
 
 //        ll.quickSort(0, ll.len());
 //        ll.mergeSort(0, ll.len() - 1);
-        ll.bucketSort();
+        ll.heapSort();
         ll.print();
     }
 }
