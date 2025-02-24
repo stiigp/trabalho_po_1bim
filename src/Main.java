@@ -140,7 +140,7 @@ public class Main {
 
 //        ll.quickSort(0, ll.len());
 //        ll.mergeSort(0, ll.len() - 1);
-        ll.heapSort();
+        ll.shakerSort();
         ll.print();
     }
 }

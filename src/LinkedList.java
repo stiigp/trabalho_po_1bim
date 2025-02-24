@@ -109,7 +109,6 @@ public class LinkedList {
     public void bubbleSort() {
         NoLista pointer_i;
         int len = this.len();
-        int i = 0;
         int j;
         double temp;
         boolean swapped = true;
@@ -117,7 +116,7 @@ public class LinkedList {
         while (swapped) {
             pointer_i = head;
             swapped = false;
-            for (j = 0; j < len - i - 1; j ++) {
+            for (j = 0; j < len - 1; j ++) {
                 if (pointer_i.getValor() > pointer_i.getProx().getValor()) {
                     swapped = true;
                     temp = pointer_i.getProx().getValor();
@@ -126,8 +125,7 @@ public class LinkedList {
                 }
                 pointer_i = pointer_i.getProx();
             }
-
-            i ++;
+            len --;
         }
     }
 
@@ -195,46 +193,42 @@ public class LinkedList {
     }
 
     public void shakerSort() {
-        NoLista pointer = head;
+        NoLista inicio = head, fim = end, pointer;
         int len = this.len();
         double temp;
         int j;
+        boolean swapped = true;
 
-        // vai haver n / 2 iterações principais, sendo n o tamanho da lista
-        for (int i = 0; i < len/2; i ++) {
-
-            // essa é a operação normal do bubbleSort, que "empurra" o maior elemento até o final
-            // porém j começa em i pois o shakerSort ordena "nas duas pontas"
-            // então a sublista lista[0:i] (intervalo superior exclusivo) já está ordenada
-            for (j = i; j < len - 1 - i; j ++) {
+        while (inicio != fim && swapped) {
+            pointer = inicio;
+            swapped = false;
+            while (pointer != fim.getAnt()) {
                 if (pointer.getValor() > pointer.getProx().getValor()) {
+                    swapped = true;
                     temp = pointer.getValor();
                     pointer.setValor(pointer.getProx().getValor());
                     pointer.getProx().setValor(temp);
                 }
+
                 pointer = pointer.getProx();
             }
+            fim = fim.getAnt();
 
-            System.out.println("j parou em: " + j);
+            if (swapped && inicio != fim) {
+                pointer = fim;
+                swapped = false;
+                while (pointer != inicio) {
+                    if (pointer.getValor() < pointer.getAnt().getValor()) {
+                        swapped = true;
+                        temp = pointer.getValor();
+                        pointer.setValor(pointer.getAnt().getValor());
+                        pointer.getAnt().setValor(temp);
+                    }
 
-            // aqui vamos fazer basicamente a mesma operação, mas trazendo o menor elemento para o começo da lista
-            // ponteiro para no primeiro elemento da sublista ordenada do topo, então recuamos 1 para evitar
-            // uma comparação desnecessária
-
-            pointer = pointer.getAnt();
-            for (j --; j > i; j--) {
-                if (pointer.getValor() < pointer.getAnt().getValor()) {
-                    temp = pointer.getValor();
-                    pointer.setValor(pointer.getAnt().getValor());
-                    pointer.getAnt().setValor(temp);
+                    pointer = pointer.getAnt();
                 }
-                pointer = pointer.getAnt();
+                inicio = inicio.getProx();
             }
-
-            System.out.println("j parou em: " + j);
-
-            // avançamos o ponteiro aqui ao final para ele já ficar na posição certa para a próxima iteração
-            pointer = pointer.getProx();
         }
     }
 
