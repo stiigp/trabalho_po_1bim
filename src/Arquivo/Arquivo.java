@@ -88,7 +88,45 @@ public class Arquivo
         }
     }
 
-    public void insercaoDireta() {}
+    public void insercaoDireta() {
+        initComp(); initMov();
+        Registro pointer_i = new Registro(0), pointer_j = new Registro(0);
+        int i = 0, j, valor_i;
+
+        while (i < filesize()) {
+            seekArq(i);
+            pointer_i.leDoArq(this.arquivo);
+            valor_i = pointer_i.getNumero();
+            j = i - 1;
+
+            if (j >= 0) {
+                seekArq(j);
+                pointer_j.leDoArq(this.arquivo);
+            }
+
+            while (j >= 0 && pointer_j.getNumero() > valor_i) {
+                comp ++;
+                pointer_i.setNumero(pointer_j.getNumero());
+//                seekArq(j + 1);
+                pointer_i.gravaNoArq(this.arquivo);
+                mov ++;
+
+                j --;
+                if (j >= 0) {
+                    pointer_i = pointer_j;
+
+                    seekArq(j);
+                    pointer_j.leDoArq(this.arquivo);
+                }
+            }
+
+            seekArq(j + 1);
+            pointer_i.setNumero(valor_i);
+            pointer_i.gravaNoArq(this.arquivo);
+            mov ++;
+            i ++;
+        }
+    }
     //demais metodos de ordenacao
 
 

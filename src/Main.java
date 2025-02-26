@@ -148,11 +148,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Arquivo ordenado = new Arquivo("ordenado");
-//        ordenado.geraArquivoOrdenado(64);
-//        ordenado.geraArquivoReverso(64);
-//        ordenado.geraArquivoRandomico(64);
-        ordenado.exibeArq();
-//        System.out.println(ordenado.filesize());
+        Arquivo arquivo = new Arquivo("arquivo");
+//        arquivo.geraArquivoOrdenado(64);
+//        arquivo.geraArquivoReverso(64);
+//        arquivo.geraArquivoRandomico(64);
+//        arquivo.insercaoDireta();
+        arquivo.exibeArq();
+//        System.out.println(arquivo.filesize());
     }
 }
