@@ -1,5 +1,8 @@
+import Arquivo.Arquivo;
+
 public class Main {
-    public static void main(String[] args) {
+
+    public void sortsLinkedList() {
         LinkedList ll = new LinkedList();
         // a lista abaixo foi gerada pelo chatGPT para testar o timSort, que precisa de uma lista bem grande para ser
         // devidamente testado
@@ -142,5 +145,14 @@ public class Main {
 //        ll.mergeSort(0, ll.len() - 1);
         ll.shakerSort();
         ll.print();
+    }
+
+    public static void main(String[] args) {
+        Arquivo ordenado = new Arquivo("ordenado");
+//        ordenado.geraArquivoOrdenado(64);
+//        ordenado.geraArquivoReverso(64);
+//        ordenado.geraArquivoRandomico(64);
+        ordenado.exibeArq();
+//        System.out.println(ordenado.filesize());
     }
 }
