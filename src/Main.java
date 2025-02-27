@@ -153,7 +153,10 @@ public class Main {
 //        arquivo.geraArquivoReverso(64);
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.insercaoDireta();
+//        arquivo.bubbleSort();
         arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
     }
+
+
 }

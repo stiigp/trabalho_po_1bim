@@ -129,6 +129,37 @@ public class Arquivo
     }
     //demais metodos de ordenacao
 
+    public void bubbleSort() {
+        Registro pointer_i = new Registro(0);
+        int i, len = filesize() - 1, valor_ant;
+        boolean trocou = true;
+
+        initComp(); initMov();
+
+        while (trocou) {
+            trocou = false;
+
+            for (i = 0; i < len - 1; i ++) {
+                seekArq(i);
+                pointer_i.leDoArq(this.arquivo);
+                valor_ant = pointer_i.getNumero();
+                pointer_i.leDoArq(this.arquivo);
+
+                if (valor_ant > pointer_i.getNumero()) {
+                    comp ++;
+                    trocou = true;
+                    mov += 2;
+                    seekArq(i);
+                    pointer_i.gravaNoArq(this.arquivo);
+                    pointer_i.setNumero(valor_ant);
+                    pointer_i.gravaNoArq(this.arquivo);
+                }
+
+            }
+            len --;
+        }
+    }
+
 
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
