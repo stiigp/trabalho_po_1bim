@@ -154,6 +154,7 @@ public class Main {
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
+//        arquivo.selectionSort();
 //        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
     }

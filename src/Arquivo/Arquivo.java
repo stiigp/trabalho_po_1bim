@@ -158,6 +158,43 @@ public class Arquivo
         }
     }
 
+    public void selectionSort() {
+        Registro pointer = new Registro(0);
+        int menor, pos_menor, i, j, temp, valor_i;
+
+        initMov(); initComp();
+
+        for (i = 0; i < filesize(); i ++) {
+            seekArq(i);
+            pointer.leDoArq(this.arquivo);
+            valor_i = pointer.getNumero();
+            menor = pointer.getNumero();
+            pos_menor = i;
+
+            j = i + 1;
+            seekArq(j);
+
+            while (j < filesize()) {
+                pointer.leDoArq(this.arquivo);
+
+                if (pointer.getNumero() < menor) {
+                    comp ++;
+                    menor = pointer.getNumero();
+                    pos_menor = j;
+                }
+
+                j ++;
+            }
+
+            seekArq(pos_menor);
+            pointer.setNumero(valor_i); pointer.gravaNoArq(this.arquivo);
+            seekArq(i);
+            pointer.setNumero(menor); pointer.gravaNoArq(this.arquivo);
+
+            mov += 2;
+        }
+    }
+
 
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
