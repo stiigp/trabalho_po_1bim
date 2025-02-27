@@ -90,39 +90,37 @@ public class Arquivo
 
     public void insercaoDireta() {
         initComp(); initMov();
-        Registro pointer_i = new Registro(0), pointer_j = new Registro(0);
+        Registro pointer = new Registro(0);
         int i = 0, j, valor_i;
 
         while (i < filesize()) {
             seekArq(i);
-            pointer_i.leDoArq(this.arquivo);
-            valor_i = pointer_i.getNumero();
+            pointer.leDoArq(this.arquivo);
+            valor_i = pointer.getNumero();
             j = i - 1;
 
             if (j >= 0) {
                 seekArq(j);
-                pointer_j.leDoArq(this.arquivo);
+                pointer.leDoArq(this.arquivo);
             }
 
-            while (j >= 0 && pointer_j.getNumero() > valor_i) {
-                comp ++;
-                pointer_i.setNumero(pointer_j.getNumero());
+            while (j >= 0 && pointer.getNumero() > valor_i) {
+                comp ++; mov ++;
+//                pointer.setNumero(pointer.getNumero());
 //                seekArq(j + 1);
-                pointer_i.gravaNoArq(this.arquivo);
-                mov ++;
+                pointer.gravaNoArq(this.arquivo);
+
 
                 j --;
                 if (j >= 0) {
-                    pointer_i = pointer_j;
-
                     seekArq(j);
-                    pointer_j.leDoArq(this.arquivo);
+                    pointer.leDoArq(this.arquivo);
                 }
             }
 
             seekArq(j + 1);
-            pointer_i.setNumero(valor_i);
-            pointer_i.gravaNoArq(this.arquivo);
+            pointer.setNumero(valor_i);
+            pointer.gravaNoArq(this.arquivo);
             mov ++;
             i ++;
         }
