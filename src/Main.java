@@ -156,6 +156,7 @@ public class Main {
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();
 //        arquivo.shakerSort();
+//        arquivo.heapSort();
         arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
     }

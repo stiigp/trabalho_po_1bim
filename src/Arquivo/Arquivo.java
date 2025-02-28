@@ -258,7 +258,58 @@ public class Arquivo
         }
     }
 
+    public void heapSort() {
+        int tl = filesize(), pai, fe, fd, maior_f;
+        Registro reg_fe = new Registro(0), reg_fd = new Registro(0), reg_pai = new Registro(0), reg_maior_f = new Registro(0);
 
+
+        while (tl > 1) {
+            pai = tl / 2 - 1;
+
+            while (pai >= 0) {
+                fe = pai * 2 + 1;
+                fd = fe + 1;
+
+                seekArq(pai);
+                reg_pai.leDoArq(arquivo);
+
+                seekArq(fe);
+                reg_fe.leDoArq(arquivo);
+                reg_maior_f = reg_fe;
+                maior_f = fe;
+
+                if (fd < tl) {
+                    reg_fd.leDoArq(arquivo);
+                    if (reg_fd.getNumero() > reg_fe.getNumero()) {
+                        reg_maior_f = reg_fd;
+                        maior_f = fd;
+                    }
+                }
+
+                if (reg_maior_f.getNumero() > reg_pai.getNumero()) {
+                    seekArq(maior_f);
+                    reg_pai.gravaNoArq(arquivo);
+                    seekArq(pai);
+                    reg_maior_f.gravaNoArq(arquivo);
+                }
+
+                pai --;
+            }
+
+            seekArq(0);
+            reg_pai.leDoArq(arquivo);
+            seekArq(tl - 1);
+            reg_maior_f.leDoArq(arquivo);
+
+            seekArq(0);
+            reg_maior_f.gravaNoArq(arquivo);
+            seekArq(tl - 1);
+            reg_pai.gravaNoArq(arquivo);
+
+            tl --;
+        }
+
+    }
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);
