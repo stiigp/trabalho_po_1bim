@@ -159,44 +159,43 @@ public class Arquivo
     }
 
     public void selectionSort() {
-        Registro pointer = new Registro(0);
-        int menor, pos_menor, i, j, temp, valor_i;
+        Registro pointer_i = new Registro(0), pointer_j = new Registro(0), pointer_menor = new Registro(0);
+        int menor, pos_menor, i, j;
 
         initMov(); initComp();
 
         for (i = 0; i < filesize(); i ++) {
             seekArq(i);
-            pointer.leDoArq(this.arquivo);
-            valor_i = pointer.getNumero();
-            menor = pointer.getNumero();
+            pointer_i.leDoArq(this.arquivo);
+            menor = pointer_i.getNumero();
             pos_menor = i;
 
             j = i + 1;
-            seekArq(j);
 
             while (j < filesize()) {
-                pointer.leDoArq(this.arquivo);
+                pointer_j.leDoArq(this.arquivo);
 
-                if (pointer.getNumero() < menor) {
-                    menor = pointer.getNumero();
+                if (pointer_j.getNumero() < menor) {
+                    menor = pointer_j.getNumero();
                     pos_menor = j;
                 }
                 comp ++;
-
                 j ++;
             }
 
             seekArq(pos_menor);
-            pointer.setNumero(valor_i); pointer.gravaNoArq(this.arquivo);
+            pointer_menor.leDoArq(arquivo);
+            seekArq(pos_menor);
+            pointer_i.gravaNoArq(arquivo);
             seekArq(i);
-            pointer.setNumero(menor); pointer.gravaNoArq(this.arquivo);
+            pointer_menor.gravaNoArq(arquivo);
 
             mov += 2;
         }
     }
 
     public void shakerSort() {
-        Registro pointer = new Registro(0);
+        Registro reg_ant = new Registro(0), reg_prox = new Registro(0);
         int indice_comeco = 0, indice_fim = filesize() - 1, valor_ant, i, valor_prox;
         boolean trocou = true;
 
@@ -208,20 +207,16 @@ public class Arquivo
             i = indice_comeco;
             while (i < indice_fim){
                 seekArq(i);
-                pointer.leDoArq(this.arquivo);
-                valor_ant = pointer.getNumero();
-                pointer.leDoArq(this.arquivo);
-                valor_prox = pointer.getNumero();
+                reg_ant.leDoArq(this.arquivo);
+                reg_prox.leDoArq(this.arquivo);
 
-                if (valor_ant > valor_prox) {
+                if (reg_ant.getNumero() > reg_prox.getNumero()) {
                     // realiza o swap
                     trocou = true;
                     mov += 2;
                     seekArq(i);
-                    pointer.setNumero(valor_prox);
-                    pointer.gravaNoArq(this.arquivo);
-                    pointer.setNumero(valor_ant);
-                    pointer.gravaNoArq(this.arquivo);
+                    reg_prox.gravaNoArq(this.arquivo);
+                    reg_ant.gravaNoArq(this.arquivo);
                 }
                 comp ++;
 
@@ -236,19 +231,15 @@ public class Arquivo
                 i = indice_fim;
                 while (i > indice_comeco) {
                     seekArq(i - 1);
-                    pointer.leDoArq(this.arquivo);
-                    valor_prox = pointer.getNumero();
-                    pointer.leDoArq(this.arquivo);
-                    valor_ant = pointer.getNumero();
+                    reg_prox.leDoArq(arquivo);
+                    reg_ant.leDoArq(this.arquivo);
 
-                    if (valor_ant < valor_prox) {
+                    if (reg_ant.getNumero() < reg_prox.getNumero()) {
                         trocou = true;
                         mov += 2;
                         seekArq(i - 1);
-                        pointer.setNumero(valor_ant);
-                        pointer.gravaNoArq(this.arquivo);
-                        pointer.setNumero(valor_prox);
-                        pointer.gravaNoArq(this.arquivo);
+                        reg_ant.gravaNoArq(this.arquivo);
+                        reg_prox.gravaNoArq(this.arquivo);
                     }
                     comp ++;
                     i --;
