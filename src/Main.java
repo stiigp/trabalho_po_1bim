@@ -155,7 +155,8 @@ public class Main {
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();
-//        arquivo.exibeArq();
+//        arquivo.shakerSort();
+        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
     }
 

@@ -144,7 +144,6 @@ public class Arquivo
                 pointer_i.leDoArq(this.arquivo);
 
                 if (valor_ant > pointer_i.getNumero()) {
-                    comp ++;
                     trocou = true;
                     mov += 2;
                     seekArq(i);
@@ -152,6 +151,7 @@ public class Arquivo
                     pointer_i.setNumero(valor_ant);
                     pointer_i.gravaNoArq(this.arquivo);
                 }
+                comp ++;
 
             }
             len --;
@@ -178,10 +178,10 @@ public class Arquivo
                 pointer.leDoArq(this.arquivo);
 
                 if (pointer.getNumero() < menor) {
-                    comp ++;
                     menor = pointer.getNumero();
                     pos_menor = j;
                 }
+                comp ++;
 
                 j ++;
             }
@@ -192,6 +192,69 @@ public class Arquivo
             pointer.setNumero(menor); pointer.gravaNoArq(this.arquivo);
 
             mov += 2;
+        }
+    }
+
+    public void shakerSort() {
+        Registro pointer = new Registro(0);
+        int indice_comeco = 0, indice_fim = filesize() - 1, valor_ant, i, valor_prox;
+        boolean trocou = true;
+
+        initComp(); initMov();
+
+        while (trocou && indice_comeco < indice_fim) {
+            trocou = false;
+
+            i = indice_comeco;
+            while (i < indice_fim){
+                seekArq(i);
+                pointer.leDoArq(this.arquivo);
+                valor_ant = pointer.getNumero();
+                pointer.leDoArq(this.arquivo);
+                valor_prox = pointer.getNumero();
+
+                if (valor_ant > valor_prox) {
+                    // realiza o swap
+                    trocou = true;
+                    mov += 2;
+                    seekArq(i);
+                    pointer.setNumero(valor_prox);
+                    pointer.gravaNoArq(this.arquivo);
+                    pointer.setNumero(valor_ant);
+                    pointer.gravaNoArq(this.arquivo);
+                }
+                comp ++;
+
+                i ++;
+            }
+
+            indice_fim --;
+
+            if (trocou) {
+                trocou = false;
+
+                i = indice_fim;
+                while (i > indice_comeco) {
+                    seekArq(i - 1);
+                    pointer.leDoArq(this.arquivo);
+                    valor_prox = pointer.getNumero();
+                    pointer.leDoArq(this.arquivo);
+                    valor_ant = pointer.getNumero();
+
+                    if (valor_ant < valor_prox) {
+                        trocou = true;
+                        mov += 2;
+                        seekArq(i - 1);
+                        pointer.setNumero(valor_ant);
+                        pointer.gravaNoArq(this.arquivo);
+                        pointer.setNumero(valor_prox);
+                        pointer.gravaNoArq(this.arquivo);
+                    }
+                    comp ++;
+                    i --;
+                }
+                indice_comeco ++;
+            }
         }
     }
 
