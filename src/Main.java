@@ -151,15 +151,21 @@ public class Main {
         Arquivo arquivo = new Arquivo("arquivo");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
-//        arquivo.geraArquivoRandomico(64);
+        arquivo.geraArquivoRandomico(64);
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();
 //        arquivo.shakerSort();
 //        arquivo.heapSort();
+        // estes devem ser utilizados antes de chamar o quickSort
+        // não adianta chamar dentro pois ele é recursivo e isso comprometeria o resultado
+//        arquivo.initMov();
+//        arquivo.initComp();
 //        arquivo.quickSort(0, arquivo.filesize() - 1);
+
 //        arquivo.gnomeSort();
-        arquivo.exibeArq();
+//        arquivo.shellSort();
+//        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
 
     }

@@ -325,7 +325,11 @@ public class Arquivo
                 seekArq(j);
                 reg_i.gravaNoArq(this.arquivo);
 
+                // executa permutação, portanto:
+                mov += 2;
             }
+            comp ++;
+
             j ++;
         }
         // i tem que ser incrementado, pois dentro do loop o i é incrementado antes da troca, então aqui ele tem que ser incrementado também
@@ -337,6 +341,9 @@ public class Arquivo
         reg_pivo.gravaNoArq(this.arquivo);
         seekArq(fim - 1);
         reg_i.gravaNoArq(this.arquivo);
+
+        // mais uma permutação, mas sem comparação:
+        mov += 2;
 
         // retorna para usarmos como o meio nas chamadas recursivas
         return i;
@@ -353,6 +360,8 @@ public class Arquivo
     }
 
     public void gnomeSort() {
+        initComp(); initMov();
+
         Registro reg_ant = new Registro(0), reg_prox = new Registro(0);
         int ant = 0, len = this.filesize() - 1;
 
@@ -366,11 +375,60 @@ public class Arquivo
                 reg_prox.gravaNoArq(this.arquivo);
                 reg_ant.gravaNoArq(this.arquivo);
 
+                // permutação, portanto:
+                mov += 2;
+
                 if (ant > 0)
                     ant --;
             } else
                 ant ++;
+
+            comp ++;
         }
+    }
+
+    public void shellSort() {
+        int len = this.filesize() - 1, gap = len / 2, i, j;
+        Registro reg_i = new Registro(0), reg_aux = new Registro(0);
+
+        while (gap >= 1) {
+
+            for (i = gap; i < len; i ++) {
+                seekArq(i);
+                reg_i.leDoArq(this.arquivo);
+
+                j = i - gap;
+
+                seekArq(j);
+                reg_aux.leDoArq(this.arquivo);
+
+                while (j >= 0 && reg_aux.getNumero() > reg_i.getNumero()) {
+                    comp ++;
+
+                    seekArq(j + gap);
+                    reg_aux.gravaNoArq(this.arquivo);
+
+                    // não ocorre permutação, portanto:
+                    mov ++;
+
+                    j -= gap;
+
+                    if (j >= 0) {
+                        seekArq(j);
+                        reg_aux.leDoArq(this.arquivo);
+                    }
+                }
+
+                seekArq(j + gap);
+                reg_i.gravaNoArq(this.arquivo);
+
+                // não ocorre permutação, portanto:
+                mov ++;
+            }
+
+            gap /= 2;
+        }
+
     }
 
     public void geraArquivoOrdenado(int nRegistros) {
