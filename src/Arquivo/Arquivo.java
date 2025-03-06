@@ -89,39 +89,36 @@ public class Arquivo
     }
 
     public void insercaoDireta() {
-        // REFATORAR PARA FAZER COM MAIS DE UM REGISTRO
         initComp(); initMov();
-        Registro pointer = new Registro(0);
-        int i = 0, j, valor_i;
+        Registro reg_i = new Registro(0), reg_j = new Registro(0);
+        int i = 0, j;
 
         while (i < filesize()) {
             seekArq(i);
-            pointer.leDoArq(this.arquivo);
-            valor_i = pointer.getNumero();
+            reg_i.leDoArq(this.arquivo);
             j = i - 1;
 
             if (j >= 0) {
                 seekArq(j);
-                pointer.leDoArq(this.arquivo);
+                reg_j.leDoArq(this.arquivo);
             }
 
-            while (j >= 0 && pointer.getNumero() > valor_i) {
+            while (j >= 0 && reg_j.getNumero() > reg_i.getNumero()) {
                 comp ++; mov ++;
-//                pointer.setNumero(pointer.getNumero());
+//                reg_i.setNumero(reg_i.getNumero());
 //                seekArq(j + 1);
-                pointer.gravaNoArq(this.arquivo);
+                reg_j.gravaNoArq(this.arquivo);
 
 
                 j --;
                 if (j >= 0) {
                     seekArq(j);
-                    pointer.leDoArq(this.arquivo);
+                    reg_j.leDoArq(this.arquivo);
                 }
             }
 
             seekArq(j + 1);
-            pointer.setNumero(valor_i);
-            pointer.gravaNoArq(this.arquivo);
+            reg_i.gravaNoArq(this.arquivo);
             mov ++;
             i ++;
         }
@@ -129,9 +126,8 @@ public class Arquivo
     //demais metodos de ordenacao
 
     public void bubbleSort() {
-        // REFATORAR P/ FAZER COM MAIS DE UM REGISTRO
-        Registro pointer_i = new Registro(0);
-        int i, len = filesize() - 1, valor_ant;
+        Registro reg_i = new Registro(0), reg_ant = new Registro(0);
+        int i, len = filesize() - 1;
         boolean trocou = true;
 
         initComp(); initMov();
@@ -141,35 +137,32 @@ public class Arquivo
 
             for (i = 0; i < len - 1; i ++) {
                 seekArq(i);
-                pointer_i.leDoArq(this.arquivo);
-                valor_ant = pointer_i.getNumero();
-                pointer_i.leDoArq(this.arquivo);
+                reg_ant.leDoArq(this.arquivo);
+                reg_i.leDoArq(this.arquivo);
 
-                if (valor_ant > pointer_i.getNumero()) {
+                if (reg_ant.getNumero() > reg_i.getNumero()) {
                     trocou = true;
                     mov += 2;
                     seekArq(i);
-                    pointer_i.gravaNoArq(this.arquivo);
-                    pointer_i.setNumero(valor_ant);
-                    pointer_i.gravaNoArq(this.arquivo);
+                    reg_i.gravaNoArq(this.arquivo);
+                    reg_ant.gravaNoArq(this.arquivo);
                 }
                 comp ++;
-
             }
             len --;
         }
     }
 
     public void selectionSort() {
-        Registro pointer_i = new Registro(0), pointer_j = new Registro(0), pointer_menor = new Registro(0);
+        Registro reg_i = new Registro(0), pointer_j = new Registro(0), pointer_menor = new Registro(0);
         int menor, pos_menor, i, j;
 
         initMov(); initComp();
 
         for (i = 0; i < filesize(); i ++) {
             seekArq(i);
-            pointer_i.leDoArq(this.arquivo);
-            menor = pointer_i.getNumero();
+            reg_i.leDoArq(this.arquivo);
+            menor = reg_i.getNumero();
             pos_menor = i;
 
             j = i + 1;
@@ -188,7 +181,7 @@ public class Arquivo
             seekArq(pos_menor);
             pointer_menor.leDoArq(arquivo);
             seekArq(pos_menor);
-            pointer_i.gravaNoArq(arquivo);
+            reg_i.gravaNoArq(arquivo);
             seekArq(i);
             pointer_menor.gravaNoArq(arquivo);
 
