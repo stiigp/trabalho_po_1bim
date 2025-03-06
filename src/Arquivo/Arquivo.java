@@ -83,9 +83,10 @@ public class Arquivo
         Registro reg = new Registro(0);
         reg.leDoArq(this.arquivo);
         while (!this.eof()) {
-            System.out.println(reg.getNumero());
+            System.out.print(reg.getNumero() + " ");
             reg.leDoArq(this.arquivo);
         }
+        System.out.println();
     }
 
     public void insercaoDireta() {
@@ -295,6 +296,61 @@ public class Arquivo
             tl --;
         }
 
+    }
+
+    // tornar privado depois
+    // partição *com pivô*, partição de lomuto, usa último elemento como pivô
+    private int particiona(int ini, int fim) {
+        int i = ini - 1, j = ini;
+        Registro reg_i = new Registro(0), reg_j = new Registro(0), reg_pivo = new Registro(0);
+
+        seekArq(fim - 1);
+        reg_pivo.leDoArq(this.arquivo);
+
+        while (j < fim - 1) {
+            // j vai representar o elemento andando no arquivo, o que vamos usar para fazer as comparações com o pivô
+            // enquanto isso, i vai representar o limiar da sublista de elementos menores que o pivô
+            seekArq(j);
+            reg_j.leDoArq(this.arquivo);
+
+            if (reg_j.getNumero() < reg_pivo.getNumero()) {
+                // vamos colocar o elemento de j como o último elemento da sublista de elementos menores que o pivô
+                // e incrementar o i (que representa até onde essa sublista vai)
+
+                i ++;
+
+                seekArq(i);
+                reg_i.leDoArq(this.arquivo);
+                seekArq(i);
+                reg_j.gravaNoArq(this.arquivo);
+                seekArq(j);
+                reg_i.gravaNoArq(this.arquivo);
+
+            }
+            j ++;
+        }
+        // i tem que ser incrementado, pois dentro do loop o i é incrementado antes da troca, então aqui ele tem que ser incrementado também
+        i ++;
+
+        seekArq(i);
+        reg_i.leDoArq(this.arquivo);
+        seekArq(i);
+        reg_pivo.gravaNoArq(this.arquivo);
+        seekArq(fim - 1);
+        reg_i.gravaNoArq(this.arquivo);
+
+        // retorna para usarmos como o meio nas chamadas recursivas
+        return i;
+    }
+
+    public void quickSort(int ini, int fim) {
+        int meio;
+
+        if (ini < fim) {
+            meio = particiona(ini, fim);
+            quickSort(ini, meio);
+            quickSort(meio + 1, fim);
+        }
     }
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
