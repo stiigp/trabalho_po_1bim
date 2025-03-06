@@ -158,6 +158,7 @@ public class Main {
 //        arquivo.shakerSort();
 //        arquivo.heapSort();
 //        arquivo.quickSort(0, arquivo.filesize() - 1);
+//        arquivo.gnomeSort();
         arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
 

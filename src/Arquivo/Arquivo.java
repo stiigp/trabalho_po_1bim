@@ -298,7 +298,6 @@ public class Arquivo
 
     }
 
-    // tornar privado depois
     // partição *com pivô*, partição de lomuto, usa último elemento como pivô
     private int particiona(int ini, int fim) {
         int i = ini - 1, j = ini;
@@ -352,6 +351,28 @@ public class Arquivo
             quickSort(meio + 1, fim);
         }
     }
+
+    public void gnomeSort() {
+        Registro reg_ant = new Registro(0), reg_prox = new Registro(0);
+        int ant = 0, len = this.filesize() - 1;
+
+        while (ant < len - 1) {
+            seekArq(ant);
+            reg_ant.leDoArq(this.arquivo);
+            reg_prox.leDoArq(this.arquivo);
+
+            if (reg_prox.getNumero() < reg_ant.getNumero()) {
+                seekArq(ant);
+                reg_prox.gravaNoArq(this.arquivo);
+                reg_ant.gravaNoArq(this.arquivo);
+
+                if (ant > 0)
+                    ant --;
+            } else
+                ant ++;
+        }
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);
