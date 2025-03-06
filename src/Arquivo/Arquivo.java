@@ -89,6 +89,7 @@ public class Arquivo
     }
 
     public void insercaoDireta() {
+        // REFATORAR PARA FAZER COM MAIS DE UM REGISTRO
         initComp(); initMov();
         Registro pointer = new Registro(0);
         int i = 0, j, valor_i;
@@ -128,6 +129,7 @@ public class Arquivo
     //demais metodos de ordenacao
 
     public void bubbleSort() {
+        // REFATORAR P/ FAZER COM MAIS DE UM REGISTRO
         Registro pointer_i = new Registro(0);
         int i, len = filesize() - 1, valor_ant;
         boolean trocou = true;

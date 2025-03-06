@@ -917,18 +917,58 @@ public class LinkedList {
         }
     }
 
+    private void buildHeapIter(int heapSize) {
+        int pai = heapSize / 2 - 1, i, fe, fd;
+        double aux;
+        NoLista noPai, noFe, noFd, maiorF;
+
+        while (pai >= 0) {
+            noPai = this.head;
+            noFd = this.head;
+            noFe = this.head;
+
+            fd = filhoDir(pai);
+            fe = filhoEsq(pai);
+
+            for (i = 0; i < pai; i ++)
+                noPai = noPai.getProx();
+
+            for (i = 0; i < fe; i ++)
+                noFe = noFe.getProx();
+
+            maiorF = noFe;
+
+            if (fd < heapSize) {
+                for (i = 0; i < fd; i ++)
+                    noFd = noFd.getProx();
+
+                if (noFd.getValor() > noFe.getValor())
+                    maiorF = noFd;
+            }
+
+            if (maiorF.getValor() > noPai.getValor()) {
+                aux = maiorF.getValor();
+                maiorF.setValor(noPai.getValor());
+                noPai.setValor(aux);
+            }
+
+            pai --;
+        }
+    }
+
     public void heapSort() {
-        int i, len = this.len(), j;
+        int i, len, tl = this.len(), j;
         double temp;
         NoLista pointer;
-        for (i = 0; i < len; i ++) {
+        for (len = this.len(); len > 1; len --) {
             // constroi o heap
-            buildHeap(0, len - i);
+//            buildHeap(0, len);
+            buildHeapIter(len);
 
             // caminha o ponteiro do fim para o fim do heap
-            pointer = this.end;
-            for (j = 0; j < i; j ++)
-                pointer = pointer.getAnt();
+            pointer = this.head;
+            for (j = 0; j < len - 1; j ++)
+                pointer = pointer.getProx();
 
             // realiza o swap
             temp = this.head.getValor();

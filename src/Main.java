@@ -143,7 +143,7 @@ public class Main {
 
 //        ll.quickSort(0, ll.len());
 //        ll.mergeSort(0, ll.len() - 1);
-        ll.shakerSort();
+        ll.heapSort();
         ll.print();
     }
 
@@ -157,7 +157,7 @@ public class Main {
 //        arquivo.selectionSort();
 //        arquivo.shakerSort();
 //        arquivo.heapSort();
-        arquivo.exibeArq();
+//        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
     }
 
