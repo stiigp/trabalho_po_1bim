@@ -431,6 +431,46 @@ public class Arquivo
 
     }
 
+    public void combSort() {
+        initMov(); initComp();
+        Registro reg_atual = new Registro(0), reg_prox = new Registro(0);
+        int len = this.filesize() - 1, gap = len, i;
+        boolean swapped = true;
+
+
+        gap /= 1.3;
+        while (gap > 1 || swapped) {
+            swapped = false;
+
+            for (i = 0; i + gap < len; i ++) {
+                seekArq(i);
+                reg_atual.leDoArq(this.arquivo);
+
+                seekArq(i + gap);
+                reg_prox.leDoArq(this.arquivo);
+
+                if (reg_atual.getNumero() > reg_prox.getNumero()) {
+                    // "permutação", portanto:
+                    mov += 2;
+
+                    swapped = true;
+
+                    seekArq(i);
+                    reg_prox.gravaNoArq(this.arquivo);
+
+                    seekArq(i + gap);
+                    reg_atual.gravaNoArq(this.arquivo);
+                }
+
+                comp ++;
+            }
+
+
+            gap /= 1.3;
+        }
+
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);

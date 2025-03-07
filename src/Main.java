@@ -151,7 +151,7 @@ public class Main {
         Arquivo arquivo = new Arquivo("arquivo");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
-        arquivo.geraArquivoRandomico(64);
+//        arquivo.geraArquivoRandomico(64);
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();
@@ -165,6 +165,7 @@ public class Main {
 
 //        arquivo.gnomeSort();
 //        arquivo.shellSort();
+//        arquivo.combSort();
 //        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
 
