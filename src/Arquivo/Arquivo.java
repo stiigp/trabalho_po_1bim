@@ -471,6 +471,55 @@ public class Arquivo
 
     }
 
+    // não é uma busca binária comum, é adaptada para funcionar com o binaryInsertionSort
+    private int buscaBinaria(int ini, int fim, int ele) {
+        Registro reg = new Registro(0);
+        int meio = -1;
+
+        while (ini <= fim) {
+            meio = (ini + fim) / 2;
+
+            seekArq(meio);
+            reg.leDoArq(this.arquivo);
+
+            if (ele < reg.getNumero())
+                fim = meio - 1;
+            else
+                ini = meio + 1;
+            comp ++;
+        }
+
+        comp ++;
+        if (ele > reg.getNumero())
+            return meio + 1;
+        return meio;
+    }
+
+    public void binaryInsertionSort() {
+        initComp(); // as comparações ocorrem dentro da busca binária, não aqui
+        initMov();
+        Registro reg_atual = new Registro(0), reg_ant = new Registro(0);
+        int i, len = this.filesize() - 1, pos, j;
+
+        for (i = 1; i < len; i ++) {
+            seekArq(i);
+            reg_atual.leDoArq(this.arquivo);
+
+            pos = buscaBinaria(0, i, reg_atual.getNumero());
+
+            for (j = i - 1; j >= pos; j --) {
+                seekArq(j);
+                reg_ant.leDoArq(this.arquivo);
+                reg_ant.gravaNoArq(this.arquivo);
+                mov ++;
+            }
+
+            seekArq(pos);
+            reg_atual.gravaNoArq(this.arquivo);
+            mov ++;
+        }
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);
