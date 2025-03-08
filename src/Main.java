@@ -149,9 +149,9 @@ public class Main {
 
     public static void main(String[] args) {
         Arquivo arquivo = new Arquivo("arquivo");
+//        Arquivo arq_aux = new Arquivo("arq_aux");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
-//        arquivo.geraArquivoRandomico(10);
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();
@@ -168,8 +168,10 @@ public class Main {
 //        arquivo.combSort();
 //        arquivo.binaryInsertionSort();
 
-//        System.out.println(arquivo.buscaBinaria(0, 10, 10));
-//        arquivo.exibeArq();
+//        arquivo.geraArquivoRandomico(10);
+//        arquivo.mergeSort(0, 10);
+        arquivo.exibeArq();
+
 //        System.out.println(arquivo.filesize());
     }
 }

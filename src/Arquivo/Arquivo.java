@@ -520,6 +520,81 @@ public class Arquivo
         }
     }
 
+    private void copiaParaArquivoAuxiliar(int ini, int fim) {
+        Registro reg = new Registro(0);
+        Arquivo aux = new Arquivo("arq_aux");
+        int i;
+
+        // copiando para o arquivo auxiliar
+        this.seekArq(ini);
+        for (i = ini; i < fim; i ++) {
+            reg.leDoArq(this.arquivo);
+            reg.gravaNoArq(aux.arquivo);
+        }
+    }
+
+    private void merge(int ini, int meio, int fim) {
+        // acredito que a melhor abordagem seja copiar do início ao fim
+        // em um novo arquivo auxiliar, para então fazer a intercalação
+        // desse arquivo auxiliar no arquivo original
+        copiaParaArquivoAuxiliar(ini, fim);
+        Arquivo aux = new Arquivo("arq_aux");
+
+        // um registro para a primeira metade do arquivo, outro para a segunda metade
+        Registro reg_prim = new Registro(0), reg_seg = new Registro(0);
+        int indice_prim = 0, indice_seg = meio - ini;
+
+        aux.seekArq(indice_prim);
+        reg_prim.leDoArq(aux.arquivo);
+
+        aux.seekArq(indice_seg);
+        reg_seg.leDoArq(aux.arquivo);
+
+        this.seekArq(ini);
+        while (indice_prim < meio - ini && indice_seg < fim - ini) {
+            if (reg_prim.getNumero() < reg_seg.getNumero()) {
+                reg_prim.gravaNoArq(this.arquivo);
+                indice_prim ++;
+
+                if (indice_prim < meio) {
+                    aux.seekArq(indice_prim);
+                    reg_prim.leDoArq(aux.arquivo);
+                }
+            } else {
+                reg_seg.gravaNoArq(this.arquivo);
+                indice_seg ++;
+
+                if (indice_seg < fim) {
+                    aux.seekArq(indice_seg);
+                    reg_seg.leDoArq(aux.arquivo);
+                }
+            }
+        }
+
+        aux.seekArq(indice_prim);
+        while (indice_prim < meio - ini) {
+            reg_prim.leDoArq(aux.arquivo);
+            reg_prim.gravaNoArq(this.arquivo);
+            indice_prim ++;
+        }
+
+        aux.seekArq(indice_seg);
+        while (indice_seg < fim - ini) {
+            reg_seg.leDoArq(aux.arquivo);
+            reg_seg.gravaNoArq(this.arquivo);
+            indice_seg ++;
+        }
+    }
+
+    public void mergeSort(int ini, int fim) {
+        int meio = (ini + fim) / 2;
+        if (fim - ini > 1) {
+            mergeSort(ini, meio);
+            mergeSort(meio, fim);
+            merge(ini, meio, fim);
+        }
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);
