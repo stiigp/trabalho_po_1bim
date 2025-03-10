@@ -174,6 +174,18 @@ public class Main {
 
 //        System.out.println(arquivo.filesize());
 
+        LinkedList ll = new LinkedList();
+
+        ll.insert(15);
+        ll.insert(13);
+        ll.insert(2);
+        ll.insert(78);
+        ll.insert(5);
+        ll.insert(89);
+
+        ll.shellSort();
+
+        ll.print();
 
     }
 }

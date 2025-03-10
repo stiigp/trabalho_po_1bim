@@ -539,7 +539,7 @@ public class LinkedList {
 
     public void shellSort() {
         NoLista pointer1, pointer2;
-        int gap = 1;
+        int gap = 1, pos;
         int i;
         double temp;
 
@@ -552,6 +552,10 @@ public class LinkedList {
             // posicionando o ponteiro no gap
             for (i = 0; i < gap; i ++)
                 pointer1 = pointer1.getProx();
+
+            // var pos vai ser usada pra guardar a posição correta do pointer1 entre as múltiplas iterações com
+            // um mesmo gap
+            pos = gap;
 
             // enquanto não chegar no final da lista com o pointer1
             while (pointer1 != null) {
@@ -578,7 +582,13 @@ public class LinkedList {
                 // escreve o valor do pointer1 inicial no lugar certo dentro da sublista
                 pointer1.setValor(temp);
 
-                pointer1 = pointer1.getProx();
+
+                // colocando pointer1 na posição correta
+                pos ++;
+
+                pointer1 = this.head;
+                for (i = 0; i < pos; i ++)
+                    pointer1 = pointer1.getProx();
             }
 
             // refaz o processo com o gap menor
