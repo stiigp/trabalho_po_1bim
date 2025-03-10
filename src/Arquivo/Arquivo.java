@@ -595,6 +595,58 @@ public class Arquivo
         }
     }
 
+    private int max() {
+        Registro reg = new Registro(0);
+        int maior;
+
+        seekArq(0);
+        reg.leDoArq(this.arquivo);
+
+        maior = reg.getNumero();
+
+        while (!eof()) {
+            reg.leDoArq(this.arquivo);
+
+            if (reg.getNumero() > maior) {
+                maior = reg.getNumero();
+            }
+        }
+
+        return maior;
+    }
+
+    public void countingSort() {
+        Arquivo arq_aux = new Arquivo("arq_aux");
+        Registro reg = new Registro(0);
+        int maior = max(), i, len = filesize() - 1;
+        int[] arr = new int[maior + 1];
+
+        // preenchendo o vetor de count
+        seekArq(0);
+        reg.leDoArq(this.arquivo);
+        while (!eof()) {
+            arr[reg.getNumero()] ++;
+            reg.leDoArq(this.arquivo);
+        }
+
+        // adicionando o prefixo nos elementos do vetor
+        seekArq(0);
+        for (i = 1; i < arr.length; i ++) {
+            arr[i] += arr[i - 1];
+        }
+
+        // efetivamente ordenando o arquivo
+        for (i = len - 1; i >= 0; i --) {
+            arq_aux.seekArq(i);
+            reg.leDoArq(arq_aux.arquivo);
+
+            arr[reg.getNumero()] --;
+
+            seekArq(arr[reg.getNumero()]);
+            reg.gravaNoArq(this.arquivo);
+        }
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);

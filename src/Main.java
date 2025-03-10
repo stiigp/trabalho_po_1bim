@@ -168,9 +168,10 @@ public class Main {
 //        arquivo.combSort();
 //        arquivo.binaryInsertionSort();
 
-//        arquivo.geraArquivoRandomico(10);
-//        arquivo.mergeSort(0, 10);
-        arquivo.exibeArq();
+//        arquivo.geraArquivoRandomico(64);
+//        arquivo.mergeSort(0, arquivo.filesize() - 1);
+//        arquivo.countingSort();
+//        arquivo.exibeArq();
 
 //        System.out.println(arquivo.filesize());
     }
