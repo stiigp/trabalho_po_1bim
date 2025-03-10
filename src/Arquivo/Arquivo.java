@@ -619,6 +619,8 @@ public class Arquivo
     }
 
     public void countingSort() {
+        initComp(); initMov();
+
         Arquivo arq_aux = new Arquivo("arq_aux");
         Registro reg = new Registro(0);
         int maior = max(), i, len = filesize() - 1;
@@ -647,6 +649,10 @@ public class Arquivo
 
             seekArq(arr[reg.getNumero()]);
             reg.gravaNoArq(this.arquivo);
+
+            // o algoritmo simplesmente não tem comparações e faz somente n movimentações
+            // sua grande desvantagem é a complexidade em memória
+            mov ++;
         }
     }
 
