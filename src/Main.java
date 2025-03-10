@@ -170,22 +170,17 @@ public class Main {
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.mergeSort(0, arquivo.filesize() - 1);
 //        arquivo.shellSort();
-//        arquivo.exibeArq();
+        arquivo.exibeArq();
 
+//        System.out.println(arquivo.maximoAlgarismoN(2));
+//        int vet[] = arquivo.vetorCount(1);
+//        for (int i: vet)
+//            System.out.print(i + " ");
+//        arquivo.radixCountingSort(1);
+//        arquivo.radixSort();
 //        System.out.println(arquivo.filesize());
 
-        LinkedList ll = new LinkedList();
 
-        ll.insert(15);
-        ll.insert(13);
-        ll.insert(2);
-        ll.insert(78);
-        ll.insert(5);
-        ll.insert(89);
-
-        ll.shellSort();
-
-        ll.print();
 
     }
 }

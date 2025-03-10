@@ -30,6 +30,18 @@ public class Arquivo
         this.arquivo = arquivoOrigem;
     }
 
+    private void copiaArquivoInterno(Arquivo arquivo) {
+        Registro reg = new Registro(0);
+        arquivo.seekArq(0);
+        this.seekArq(0);
+
+        reg.leDoArq(arquivo.arquivo);
+        while (!arquivo.eof()) {
+            reg.gravaNoArq(this.arquivo);
+            reg.leDoArq(arquivo.arquivo);
+        }
+    }
+
     public RandomAccessFile getFile() {
         return this.arquivo;
     }
@@ -467,8 +479,6 @@ public class Arquivo
 
                 comp ++;
             }
-
-
             gap /= 1.3;
         }
 
@@ -598,11 +608,12 @@ public class Arquivo
         }
     }
 
-    private int max() {
+    public int max() {
         Registro reg = new Registro(0);
         int maior;
 
         seekArq(0);
+
         reg.leDoArq(this.arquivo);
 
         maior = reg.getNumero();
@@ -653,6 +664,104 @@ public class Arquivo
             // o algoritmo simplesmente não tem comparações e faz somente n movimentações
             // sua grande desvantagem é a complexidade em memória
             mov ++;
+        }
+    }
+
+    private int nesimoAlgarismo(int num, int n) {
+        // retorna o n-ésimo algarismo do número da direita pra esquerda
+
+        int aux = 0, i;
+        for (i = 0; i < n; i ++) {
+            aux = num % 10;
+            num /= 10;
+        }
+
+        return aux;
+
+    }
+
+    public int numeroDeAlgarismos(int num) {
+        // retorna o número de algarismos de um número
+
+        int cont = 0;
+
+        if (num == 0)
+            return 1;
+
+        while (num > 0) {
+            num /= 10;
+            cont ++;
+        }
+
+        return cont;
+    }
+
+    public int maximoAlgarismoN(int algarismo) {
+        Registro reg = new Registro(0);
+        int max = 0;
+
+        seekArq(0);
+        reg.leDoArq(this.arquivo);
+        while (!eof()) {
+            if (nesimoAlgarismo(reg.getNumero(), algarismo) > max)
+                max = nesimoAlgarismo(reg.getNumero(), algarismo);
+
+            reg.leDoArq(this.arquivo);
+        }
+
+        return max;
+    }
+
+    public int[] vetorCount(int algarismo) {
+        // retorna um vetor de contagem baseado em um algarismo específico
+        int[] vet = new int[maximoAlgarismoN(algarismo) + 1];
+        int i;
+
+        Registro reg = new Registro(0);
+
+        seekArq(0);
+        reg.leDoArq(this.arquivo);
+        while (!eof()) {
+            vet[nesimoAlgarismo(reg.getNumero(), algarismo)] ++;
+            reg.leDoArq(this.arquivo);
+        }
+
+        for (i = 1; i < vet.length; i ++) {
+            vet[i] += vet[i - 1];
+        }
+
+        return vet;
+    }
+
+    public void radixCountingSort(int algarismo) {
+        Arquivo arq_aux = new Arquivo("arq_aux");
+        Registro reg = new Registro(0);
+        arq_aux.copiaArquivoInterno(this);
+
+        int[] vet = vetorCount(algarismo);
+        int len = filesize() - 1, i;
+
+        for (i = len - 1; i >= 0; i --) {
+            arq_aux.seekArq(i);
+            reg.leDoArq(arq_aux.arquivo);
+
+            vet[nesimoAlgarismo(reg.getNumero(), algarismo)] --;
+
+            seekArq(vet[nesimoAlgarismo(reg.getNumero(), algarismo)]);
+            reg.gravaNoArq(this.arquivo);
+
+            // novamente, o algoritmo não usa comparações, somente algumas movimentações
+            mov ++;
+        }
+    }
+
+    public void radixSort() {
+        int maior = max(), nAlgarismosMaior = numeroDeAlgarismos(maior), n;
+        initMov(); initComp();
+
+        for (n = 1; n <= nAlgarismosMaior; n ++) {
+            System.out.println(n);
+            radixCountingSort(n);
         }
     }
 
