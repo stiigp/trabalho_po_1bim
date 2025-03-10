@@ -149,7 +149,6 @@ public class Main {
 
     public static void main(String[] args) {
         Arquivo arquivo = new Arquivo("arquivo");
-//        Arquivo arq_aux = new Arquivo("arq_aux");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
 //        arquivo.insercaoDireta();
@@ -170,9 +169,11 @@ public class Main {
 
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.mergeSort(0, arquivo.filesize() - 1);
-//        arquivo.countingSort();
+//        arquivo.shellSort();
 //        arquivo.exibeArq();
 
 //        System.out.println(arquivo.filesize());
+
+
     }
 }

@@ -388,8 +388,11 @@ public class Arquivo
     }
 
     public void shellSort() {
-        int len = this.filesize() - 1, gap = len / 2, i, j;
+        int len = this.filesize() - 1, gap = 1, i, j;
         Registro reg_i = new Registro(0), reg_aux = new Registro(0);
+
+        while (gap * 2 + 1 < len)
+            gap = gap * 2 + 1;
 
         while (gap >= 1) {
 

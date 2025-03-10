@@ -539,9 +539,12 @@ public class LinkedList {
 
     public void shellSort() {
         NoLista pointer1, pointer2;
-        int gap = this.len() / 2;
+        int gap = 1;
         int i;
         double temp;
+
+        while (gap * 2 + 1 < len())
+            gap = gap * 2 + 1;
 
         while (gap >= 1) {
             pointer1 = head;
