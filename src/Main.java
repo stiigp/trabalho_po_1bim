@@ -170,17 +170,13 @@ public class Main {
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.mergeSort(0, arquivo.filesize() - 1);
 //        arquivo.shellSort();
-        arquivo.exibeArq();
+//        arquivo.exibeArq();
+//        arquivo.bucketSort();
 
-//        System.out.println(arquivo.maximoAlgarismoN(2));
-//        int vet[] = arquivo.vetorCount(1);
-//        for (int i: vet)
-//            System.out.print(i + " ");
-//        arquivo.radixCountingSort(1);
-//        arquivo.radixSort();
+//        arquivo.geraArquivoRandomico(1328);
+//        arquivo.bucketSort();
+//        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
-
-
 
     }
 }

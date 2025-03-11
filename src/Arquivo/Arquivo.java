@@ -98,7 +98,7 @@ public class Arquivo
             System.out.print(reg.getNumero() + " ");
             reg.leDoArq(this.arquivo);
         }
-        System.out.println();
+        System.out.println(reg.getNumero());
     }
 
     public void insercaoDireta() {
@@ -140,7 +140,7 @@ public class Arquivo
 
     public void bubbleSort() {
         Registro reg_i = new Registro(0), reg_ant = new Registro(0);
-        int i, len = filesize() - 1;
+        int i, len = filesize();
         boolean trocou = true;
 
         initComp(); initMov();
@@ -204,7 +204,7 @@ public class Arquivo
 
     public void shakerSort() {
         Registro reg_ant = new Registro(0), reg_prox = new Registro(0);
-        int indice_comeco = 0, indice_fim = filesize() - 1, valor_ant, i, valor_prox;
+        int indice_comeco = 0, indice_fim = filesize(), valor_ant, i, valor_prox;
         boolean trocou = true;
 
         initComp(); initMov();
@@ -375,7 +375,7 @@ public class Arquivo
         initComp(); initMov();
 
         Registro reg_ant = new Registro(0), reg_prox = new Registro(0);
-        int ant = 0, len = this.filesize() - 1;
+        int ant = 0, len = this.filesize();
 
         while (ant < len - 1) {
             seekArq(ant);
@@ -400,7 +400,7 @@ public class Arquivo
     }
 
     public void shellSort() {
-        int len = this.filesize() - 1, gap = 1, i, j;
+        int len = this.filesize(), gap = 1, i, j;
         Registro reg_i = new Registro(0), reg_aux = new Registro(0);
 
         while (gap * 2 + 1 < len)
@@ -449,7 +449,7 @@ public class Arquivo
     public void combSort() {
         initMov(); initComp();
         Registro reg_atual = new Registro(0), reg_prox = new Registro(0);
-        int len = this.filesize() - 1, gap = len, i;
+        int len = this.filesize(), gap = len, i;
         boolean swapped = true;
 
 
@@ -512,7 +512,7 @@ public class Arquivo
         initComp(); // as comparações ocorrem dentro da busca binária, não aqui
         initMov();
         Registro reg_atual = new Registro(0), reg_ant = new Registro(0);
-        int i, len = this.filesize() - 1, pos, j;
+        int i, len = this.filesize(), pos, j;
 
         for (i = 1; i < len; i ++) {
             seekArq(i);
@@ -610,20 +610,22 @@ public class Arquivo
 
     public int max() {
         Registro reg = new Registro(0);
-        int maior;
+        int maior = 0;
 
         seekArq(0);
 
         reg.leDoArq(this.arquivo);
 
-        maior = reg.getNumero();
-
         while (!eof()) {
-            reg.leDoArq(this.arquivo);
-
             if (reg.getNumero() > maior) {
                 maior = reg.getNumero();
             }
+
+            reg.leDoArq(this.arquivo);
+        }
+
+        if (reg.getNumero() > maior) {
+            maior = reg.getNumero();
         }
 
         return maior;
@@ -634,7 +636,7 @@ public class Arquivo
 
         Arquivo arq_aux = new Arquivo("arq_aux");
         Registro reg = new Registro(0);
-        int maior = max(), i, len = filesize() - 1;
+        int maior = max(), i, len = filesize();
         int[] arr = new int[maior + 1];
 
         // preenchendo o vetor de count
@@ -644,6 +646,7 @@ public class Arquivo
             arr[reg.getNumero()] ++;
             reg.leDoArq(this.arquivo);
         }
+        arr[reg.getNumero()] ++;
 
         // adicionando o prefixo nos elementos do vetor
         seekArq(0);
@@ -680,7 +683,7 @@ public class Arquivo
 
     }
 
-    public int numeroDeAlgarismos(int num) {
+    private int numeroDeAlgarismos(int num) {
         // retorna o número de algarismos de um número
 
         int cont = 0;
@@ -696,7 +699,7 @@ public class Arquivo
         return cont;
     }
 
-    public int maximoAlgarismoN(int algarismo) {
+    private int maximoAlgarismoN(int algarismo) {
         Registro reg = new Registro(0);
         int max = 0;
 
@@ -709,10 +712,13 @@ public class Arquivo
             reg.leDoArq(this.arquivo);
         }
 
+        if (nesimoAlgarismo(reg.getNumero(), algarismo) > max)
+            max = nesimoAlgarismo(reg.getNumero(), algarismo);
+
         return max;
     }
 
-    public int[] vetorCount(int algarismo) {
+    private int[] vetorCount(int algarismo) {
         // retorna um vetor de contagem baseado em um algarismo específico
         int[] vet = new int[maximoAlgarismoN(algarismo) + 1];
         int i;
@@ -725,6 +731,7 @@ public class Arquivo
             vet[nesimoAlgarismo(reg.getNumero(), algarismo)] ++;
             reg.leDoArq(this.arquivo);
         }
+        vet[nesimoAlgarismo(reg.getNumero(), algarismo)] ++;
 
         for (i = 1; i < vet.length; i ++) {
             vet[i] += vet[i - 1];
@@ -733,13 +740,13 @@ public class Arquivo
         return vet;
     }
 
-    public void radixCountingSort(int algarismo) {
+    private void radixCountingSort(int algarismo) {
         Arquivo arq_aux = new Arquivo("arq_aux");
         Registro reg = new Registro(0);
         arq_aux.copiaArquivoInterno(this);
 
         int[] vet = vetorCount(algarismo);
-        int len = filesize() - 1, i;
+        int len = filesize(), i;
 
         for (i = len - 1; i >= 0; i --) {
             arq_aux.seekArq(i);
@@ -760,8 +767,51 @@ public class Arquivo
         initMov(); initComp();
 
         for (n = 1; n <= nAlgarismosMaior; n ++) {
-            System.out.println(n);
+//            System.out.println(n);
             radixCountingSort(n);
+        }
+    }
+
+    public void bucketSort() {
+        // bucket sort originalmente foi pensado para números decimais entre 0 e 1
+        // aqui estou adaptando para inteiros, gerando um bucket para cada intervalo de 10 valores do conjunto
+
+        int maior = max(), nAlgarismos = numeroDeAlgarismos(maior), maiorAlgarismo = nesimoAlgarismo(maior, nAlgarismos);
+        int i, tamanhoVetor = (maior - nesimoAlgarismo(maior, 1)) / 10 + 1, pos;
+        Arquivo[] vet = new Arquivo[tamanhoVetor];
+        Registro reg = new Registro(0);
+
+        for (i = 0; i < tamanhoVetor; i ++) {
+            String nome = "bucket" + i;
+            vet[i] = new Arquivo(nome);
+        }
+
+        seekArq(0);
+        reg.leDoArq(this.arquivo);
+        while (!eof()) {
+            pos = reg.getNumero() / 10;
+            reg.gravaNoArq(vet[pos].arquivo);
+
+            reg.leDoArq(this.arquivo);
+        }
+
+        pos = reg.getNumero() / 10;
+
+        reg.gravaNoArq(vet[pos].arquivo);
+
+        seekArq(0);
+
+        for (i = 0; i < tamanhoVetor; i ++) {
+            vet[i].seekArq(0);
+            vet[i].bubbleSort();
+
+            vet[i].seekArq(0);
+            reg.leDoArq(vet[i].arquivo);
+            while (!vet[i].eof()) {
+                reg.gravaNoArq(arquivo);
+                reg.leDoArq(vet[i].arquivo);
+            }
+            reg.gravaNoArq(arquivo);
         }
     }
 
@@ -770,7 +820,7 @@ public class Arquivo
             Registro reg = new Registro(i);
             reg.gravaNoArq(this.arquivo);
         }
-        this.truncate(nRegistros + 1);
+        this.truncate(nRegistros);
     }
 
     public void geraArquivoReverso(int nRegistros) {
@@ -778,7 +828,7 @@ public class Arquivo
             Registro reg = new Registro(i);
             reg.gravaNoArq(this.arquivo);
         }
-        this.truncate(nRegistros + 1);
+        this.truncate(nRegistros);
     }
 
     public void geraArquivoRandomico(int nRegistros) {
@@ -803,6 +853,6 @@ public class Arquivo
             reg.setNumero(ele);
             reg.gravaNoArq(this.arquivo);
         }
-        this.truncate(nRegistros + 1);
+        this.truncate(nRegistros);
     }
 }
