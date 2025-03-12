@@ -151,6 +151,7 @@ public class Main {
         Arquivo arquivo = new Arquivo("arquivo");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
+//        arquivo.geraArquivoRandomico(10);
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();
@@ -162,21 +163,16 @@ public class Main {
 //        arquivo.initComp();
 //        arquivo.quickSort(0, arquivo.filesize() - 1);
 
+//        arquivo.geraArquivoRandomico(512);
+//        arquivo.timSort();
+//        arquivo.exibeArq();
 //        arquivo.gnomeSort();
 //        arquivo.shellSort();
 //        arquivo.combSort();
 //        arquivo.binaryInsertionSort();
 
-//        arquivo.geraArquivoRandomico(64);
-//        arquivo.mergeSort(0, arquivo.filesize() - 1);
-//        arquivo.shellSort();
-//        arquivo.exibeArq();
-//        arquivo.bucketSort();
-
-//        arquivo.geraArquivoRandomico(1328);
-//        arquivo.bucketSort();
+//        System.out.println(arquivo.buscaBinaria(0, 10, 10));
 //        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
-
     }
 }

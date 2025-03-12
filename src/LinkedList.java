@@ -700,7 +700,7 @@ public class LinkedList {
 
         while (len >= 32) { // vamos remover os bits menos significativos até sobrarem só os 6 mais significativos
             r |= (len & 1); // r captura o bit menos significativo para cumprir que se algum dos menos significativos for 1
-            len >>= 1; // isso aqui desloca um bit para a direita (equivalente a len = len >> 1)
+            len >>= 1; // isso aqui desloca um bit para a direita (equivalente a len = len >> 1 e equivalente a dividir por 2)
         }
 
         return len + r;

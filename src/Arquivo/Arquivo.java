@@ -565,6 +565,8 @@ public class Arquivo
 
         this.seekArq(ini);
         while (indice_prim < meio - ini && indice_seg < fim - ini) {
+            comp ++;
+            mov ++;
             if (reg_prim.getNumero() < reg_seg.getNumero()) {
                 reg_prim.gravaNoArq(this.arquivo);
                 indice_prim ++;
@@ -586,6 +588,7 @@ public class Arquivo
 
         aux.seekArq(indice_prim);
         while (indice_prim < meio - ini) {
+            mov ++;
             reg_prim.leDoArq(aux.arquivo);
             reg_prim.gravaNoArq(this.arquivo);
             indice_prim ++;
@@ -593,6 +596,7 @@ public class Arquivo
 
         aux.seekArq(indice_seg);
         while (indice_seg < fim - ini) {
+            mov ++;
             reg_seg.leDoArq(aux.arquivo);
             reg_seg.gravaNoArq(this.arquivo);
             indice_seg ++;
@@ -600,6 +604,8 @@ public class Arquivo
     }
 
     public void mergeSort(int ini, int fim) {
+        initComp(); initMov();
+
         int meio = (ini + fim) / 2;
         if (fim - ini > 1) {
             mergeSort(ini, meio);
@@ -812,6 +818,195 @@ public class Arquivo
                 reg.leDoArq(vet[i].arquivo);
             }
             reg.gravaNoArq(arquivo);
+        }
+    }
+
+    private int minRun(int len) {
+        /*
+         * minRun = 6 bits mais significativos de len + 1 caso algum dos bits menos significativos seja 1
+         * */
+        int r = 0;
+
+        while (len >= 32) { // vamos remover os bits menos significativos até sobrarem só os 6 mais significativos
+            r |= (len & 1); // r captura o bit menos significativo para cumprir que se algum dos menos significativos for 1
+            len >>= 1; // isso aqui desloca um bit para a direita (equivalente a len = len >> 1 e equivalente a dividir por 2)
+        }
+
+        return len + r;
+    }
+
+    private void timInsertionSort(int ini, int fim) {
+        Registro reg = new Registro(0), reg_ant = new Registro(0);
+        int i, j, numero_i;
+
+        for (i = ini + 1; i < fim; i ++) {
+            seekArq(i);
+            reg.leDoArq(this.arquivo);
+            numero_i = reg.getNumero();
+
+            j = i - 1;
+            seekArq(j);
+            reg_ant.leDoArq(this.arquivo);
+
+            while (j >= ini && reg_ant.getNumero() > numero_i) {
+                comp ++;
+                mov ++;
+                // não precisa usar seekArq pois já está na posição correta (sempre uma pos a frente)
+                reg_ant.gravaNoArq(this.arquivo);
+
+                j --;
+                if (j >= ini) {
+                    seekArq(j);
+                    reg_ant.leDoArq(this.arquivo);
+                }
+            }
+
+            mov ++;
+            seekArq(j + 1);
+            reg.gravaNoArq(this.arquivo);
+        }
+    }
+
+    private boolean isOrdenadoCresc(int ini, int fim) {
+        boolean retorno = true;
+        Registro reg = new Registro(0);
+        int i = ini, valor_ant;
+
+        seekArq(i);
+        reg.leDoArq(this.arquivo);
+        valor_ant = reg.getNumero();
+        i ++;
+
+        while (i < fim && retorno) {
+            reg.leDoArq(this.arquivo);
+            comp ++;
+
+            if (reg.getNumero() < valor_ant)
+                retorno = false;
+
+            valor_ant = reg.getNumero();
+
+            i ++;
+        }
+
+        return retorno;
+    }
+
+    private boolean isOrdenadoDecresc(int ini, int fim) {
+        boolean retorno = true;
+        Registro reg = new Registro(0);
+        int i = ini, valor_ant;
+
+        seekArq(i);
+        reg.leDoArq(this.arquivo);
+        valor_ant = reg.getNumero();
+        i ++;
+
+        while (i < fim && retorno) {
+            comp ++;
+            reg.leDoArq(this.arquivo);
+
+            if (reg.getNumero() > valor_ant)
+                retorno = false;
+
+            valor_ant = reg.getNumero();
+
+            i ++;
+        }
+
+        return retorno;
+    }
+
+    private void inverteArq(int ini, int fim) {
+        Registro reg1 = new Registro(0), reg2 = new Registro(0);
+        int i = ini, j = fim - 1;
+
+        while (i < j) {
+            // isso aqui é análogo a uma permutação, portanto:
+            mov += 2;
+
+            seekArq(i);
+            reg1.leDoArq(this.arquivo);
+
+            seekArq(j);
+            reg2.leDoArq(this.arquivo);
+
+            seekArq(j);
+            reg1.gravaNoArq(this.arquivo);
+
+            seekArq(i);
+            reg2.gravaNoArq(this.arquivo);
+
+            i ++;
+            j --;
+        }
+    }
+
+    public void timSort() {
+        initMov(); initComp();
+
+        int minRun = this.minRun(this.filesize()), inicio_atual = 0, tamanho_atual, len = filesize(), valor_ant;
+        Registro reg = new Registro(0);
+        PilhaPair pilha = new PilhaPair();
+        NoPilha noPilha1, noPilha2;
+
+        while (inicio_atual < len) {
+            tamanho_atual = 0;
+
+            while (tamanho_atual < minRun && inicio_atual + tamanho_atual < len) {
+                tamanho_atual ++;
+            }
+
+            if (isOrdenadoCresc(inicio_atual, inicio_atual + tamanho_atual)) {
+                // tem que continuar lendo até achar o ponto em que a sublista não estará ordenada
+                seekArq(inicio_atual + tamanho_atual - 1);
+                reg.leDoArq(this.arquivo);
+                valor_ant = reg.getNumero();
+                reg.leDoArq(this.arquivo);
+
+                while (reg.getNumero() >= valor_ant && inicio_atual + tamanho_atual < len) {
+                    comp ++;
+                    valor_ant = reg.getNumero();
+                    reg.leDoArq(this.arquivo);
+
+                    tamanho_atual ++;
+                }
+            } else if (isOrdenadoDecresc(inicio_atual, inicio_atual + tamanho_atual)) {
+                // mesma coisa
+                seekArq(inicio_atual + tamanho_atual - 1);
+                reg.leDoArq(this.arquivo);
+                valor_ant = reg.getNumero();
+                reg.leDoArq(this.arquivo);
+
+                while (reg.getNumero() <= valor_ant && inicio_atual + tamanho_atual < len) {
+                    comp ++;
+                    valor_ant = reg.getNumero();
+                    reg.leDoArq(this.arquivo);
+
+                    tamanho_atual ++;
+                }
+
+                inverteArq(inicio_atual, inicio_atual + tamanho_atual);
+            } else {
+                // aqui vai ordenar usando timInsertionSort
+                timInsertionSort(inicio_atual, inicio_atual + tamanho_atual);
+            }
+
+            // e aqui somente colocar na pilha os índices
+            pilha.push(inicio_atual, inicio_atual + tamanho_atual);
+
+            inicio_atual += tamanho_atual;
+        }
+
+        while (pilha.top() != null) {
+            noPilha1 = pilha.pop();
+
+            if (pilha.top() != null) {
+                noPilha2 = pilha.pop();
+                merge(noPilha2.getPair().getFirst(), noPilha2.getPair().getSecond(), noPilha1.getPair().getSecond());
+
+                pilha.push(noPilha2.getPair().getFirst(), noPilha1.getPair().getSecond());
+            }
         }
     }
 
