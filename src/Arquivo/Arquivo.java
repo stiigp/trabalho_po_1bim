@@ -782,14 +782,17 @@ public class Arquivo
         // bucket sort originalmente foi pensado para números decimais entre 0 e 1
         // aqui estou adaptando para inteiros, gerando um bucket para cada intervalo de 10 valores do conjunto
 
-        int maior = max(), nAlgarismos = numeroDeAlgarismos(maior), maiorAlgarismo = nesimoAlgarismo(maior, nAlgarismos);
-        int i, tamanhoVetor = (maior - nesimoAlgarismo(maior, 1)) / 10 + 1, pos;
+        int maior = max();
+        int i, tamanhoVetor = (maior) / 10 + 1, pos;
         Arquivo[] vet = new Arquivo[tamanhoVetor];
         Registro reg = new Registro(0);
+
+        System.out.println(tamanhoVetor);
 
         for (i = 0; i < tamanhoVetor; i ++) {
             String nome = "bucket" + i;
             vet[i] = new Arquivo(nome);
+            vet[i].truncate(0);
         }
 
         seekArq(0);
@@ -798,12 +801,16 @@ public class Arquivo
             pos = reg.getNumero() / 10;
             reg.gravaNoArq(vet[pos].arquivo);
 
+            System.out.println(reg.getNumero());
+
             reg.leDoArq(this.arquivo);
         }
 
         pos = reg.getNumero() / 10;
 
         reg.gravaNoArq(vet[pos].arquivo);
+
+        System.out.println(reg.getNumero());
 
         seekArq(0);
 
@@ -813,7 +820,7 @@ public class Arquivo
 
             vet[i].seekArq(0);
             reg.leDoArq(vet[i].arquivo);
-            while (!vet[i].eof()) {
+            while (!(vet[i].eof())) {
                 reg.gravaNoArq(arquivo);
                 reg.leDoArq(vet[i].arquivo);
             }

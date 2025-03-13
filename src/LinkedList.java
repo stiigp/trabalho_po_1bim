@@ -371,8 +371,8 @@ public class LinkedList {
         copia = copiaLista();
 
         for (i = copia.length - 1; i >= 0; i --) {
-            arrCount[(int)copia[i]] -= 1;
-            pos = arrCount[(int)copia[i]];
+            arrCount[copia[i]] -= 1;
+            pos = arrCount[copia[i]];
 
             pointer = head;
             for (j = 0; j < pos; j ++) {
