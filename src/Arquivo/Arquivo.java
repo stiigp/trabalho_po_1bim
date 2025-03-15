@@ -1017,6 +1017,66 @@ public class Arquivo
         }
     }
 
+    private void particionaSemPivo(int ini, int fim) {
+        Registro reg_i = new Registro(0), reg_j = new Registro(0);
+        int i = ini, j = fim;
+
+        while (i < j) {
+            seekArq(i);
+            reg_i.leDoArq(this.arquivo);
+
+            seekArq(j);
+            reg_j.leDoArq(this.arquivo);
+
+            while (i < j && reg_i.getNumero() <= reg_j.getNumero()) {
+                comp ++;
+                reg_i.leDoArq(this.arquivo);
+                i ++;
+            }
+
+            if (i < j) {
+                // permutação, portanto:
+                mov += 2;
+
+                seekArq(i);
+                reg_j.gravaNoArq(this.arquivo);
+
+                seekArq(j);
+                reg_i.gravaNoArq(this.arquivo);
+            }
+
+            while (i < j && reg_i.getNumero() <= reg_j.getNumero()) {
+                comp ++;
+                j --;
+                seekArq(j);
+                reg_j.leDoArq(this.arquivo);
+            }
+
+            if (i < j) {
+                // permutação, portanto
+                mov += 2;
+
+                seekArq(i);
+                reg_j.gravaNoArq(this.arquivo);
+
+                seekArq(j);
+                reg_i.gravaNoArq(this.arquivo);
+            }
+        }
+
+        if (i < fim)
+            particionaSemPivo(i + 1, fim);
+        if (i < ini)
+            particiona(ini, i - 1);
+    }
+
+    public void quickSemPivo() {
+        initMov(); initComp();
+        int ini = 0, fim = filesize();
+
+        particiona(ini, fim);
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);

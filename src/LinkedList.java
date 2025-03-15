@@ -904,6 +904,41 @@ public class LinkedList {
         }
     }
 
+    public void particionaSemPivo(NoLista ini, NoLista fim) {
+        NoLista i = ini, j = fim;
+        int temp;
+        while (i != j) {
+            while (i != j && i.getValor() <= j.getValor())
+                i = i.getProx();
+
+            // poderia ter um if verificando se eles são diferentes, mas em vetor/lista
+            // compensa eventualmente fazer uma troca que não precisaria ao invés de
+            // fazer uma verificação toda vez
+            temp = i.getValor();
+            i.setValor(j.getValor());
+            j.setValor(temp);
+
+            while (i != j && i.getValor() <= j.getValor())
+                j = j.getAnt();
+
+            temp = i.getValor();
+            i.setValor(j.getValor());
+            j.setValor(temp);
+        }
+
+        if (i != fim && i.getProx() != fim)
+            particionaSemPivo(i.getProx(), fim);
+
+        if (i != ini && i.getAnt() != ini)
+            particionaSemPivo(ini, i.getAnt());
+    }
+
+    public void quickSemPivo() {
+        NoLista i = this.head, j = this.end;
+
+        particionaSemPivo(i, j);
+    }
+
     private int pai(int indiceFilho) {
         return indiceFilho / 2;
     }

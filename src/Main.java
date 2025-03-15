@@ -168,8 +168,8 @@ public class Main {
 //        arquivo.binaryInsertionSort();
 
 //        arquivo.geraArquivoRandomico(64);
-//        arquivo.bucketSort();
-//        arquivo.exibeArq();
+//        arquivo.quickSemPivo();
+        arquivo.exibeArq();
 //        arquivo.bucketSort();
 
 //        arquivo.geraArquivoRandomico(1328);
