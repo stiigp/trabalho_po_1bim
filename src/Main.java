@@ -169,7 +169,7 @@ public class Main {
 
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.quickSemPivo();
-        arquivo.exibeArq();
+//        arquivo.exibeArq();
 //        arquivo.bucketSort();
 
 //        arquivo.geraArquivoRandomico(1328);
@@ -177,5 +177,18 @@ public class Main {
 //        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
 
+        LinkedList ll = new LinkedList();
+
+        ll.insert(15);
+        ll.insert(13);
+        ll.insert(2);
+        ll.insert(78);
+        ll.insert(5);
+        ll.insert(89);
+        ll.insert(19);
+        ll.insert(22);
+
+        ll.mergePrimeiraImplementacao();
+        ll.print();
     }
 }

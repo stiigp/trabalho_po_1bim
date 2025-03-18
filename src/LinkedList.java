@@ -1053,4 +1053,85 @@ public class LinkedList {
             pointer.setValor(temp);
         }
     }
+
+    private void particaoMergeSort(LinkedList l1, LinkedList l2) {
+        NoLista pointer = this.head;
+        int tl = len(), i = 0;
+        l1.inicializa(); l2.inicializa();
+
+        while (i < tl / 2) {
+            l1.insert(pointer.getValor());
+
+            pointer = pointer.getProx();
+            i ++;
+        }
+
+        while (i < tl) {
+            l2.insert(pointer.getValor());
+
+            pointer = pointer.getProx();
+            i ++;
+        }
+
+    }
+
+    private void fusaoMergeSort(LinkedList l1, LinkedList l2, int seq) {
+        int i = 0, j = 0, seq_inicial = seq, len = len();
+        NoLista pointer_i = l1.head, pointer_j = l2.head, pointer = this.head;
+
+        while (seq <= len / 2) {
+            while (i < seq && j < seq) {
+                if (pointer_i.getValor() < pointer_j.getValor()) {
+                    pointer.setValor(pointer_i.getValor());
+
+                    pointer = pointer.getProx();
+                    pointer_i = pointer_i.getProx();
+
+                    i ++;
+                } else {
+                    pointer.setValor(pointer_j.getValor());
+
+                    pointer = pointer.getProx();
+                    pointer_j = pointer_j.getProx();
+
+                    j ++;
+                }
+            }
+
+            while (i < seq) {
+                pointer.setValor(pointer_i.getValor());
+
+                pointer = pointer.getProx();
+                pointer_i = pointer_i.getProx();
+
+                i ++;
+            }
+
+            while (j < seq) {
+                pointer.setValor(pointer_j.getValor());
+
+                pointer = pointer.getProx();
+                pointer_j = pointer_j.getProx();
+
+                j ++;
+            }
+
+            seq += seq_inicial;
+        }
+
+    }
+
+    public void mergePrimeiraImplementacao() {
+        // essa coisa bizonha só funciona para listas de tamanho múltiplo de 2
+
+        int seq = 1, len = this.len();
+        LinkedList ll1 = new LinkedList(), ll2 = new LinkedList();
+
+        while (seq < len) {
+            particaoMergeSort(ll1, ll2);
+            fusaoMergeSort(ll1, ll2, seq);
+
+            seq *= 2;
+        }
+    }
 }
