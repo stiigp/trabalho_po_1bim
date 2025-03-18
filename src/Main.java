@@ -169,13 +169,12 @@ public class Main {
 
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.quickSemPivo();
-        arquivo.exibeArq();
-//        arquivo.bucketSort();
-
-//        arquivo.geraArquivoRandomico(1328);
-//        arquivo.bucketSort();
 //        arquivo.exibeArq();
-//        System.out.println(arquivo.filesize());
+//        arquivo.bucketSort();
 
+//        arquivo.geraArquivoRandomico(64);
+//        arquivo.mergePrimeiraImplementacao();
+        arquivo.exibeArq();
+//        System.out.println(arquivo.filesize());
     }
 }

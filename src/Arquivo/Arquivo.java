@@ -1077,6 +1077,93 @@ public class Arquivo
         particiona(ini, fim);
     }
 
+    private void particaoMergeSort() {
+        int len = filesize(), i;
+        Arquivo particao1 = new Arquivo("particao1");
+        Arquivo particao2 = new Arquivo("particao2");
+
+        Registro reg = new Registro(0);
+
+        particao1.truncate(0);
+        particao2.truncate(0);
+
+        particao1.seekArq(0);
+        particao2.seekArq(0);
+
+        i = 0;
+        seekArq(0);
+
+        while (i < len / 2) {
+            reg.leDoArq(this.arquivo);
+            reg.gravaNoArq(particao1.arquivo);
+            i ++;
+        }
+
+        while (i < len) {
+            reg.leDoArq(this.arquivo);
+            reg.gravaNoArq(particao2.arquivo);
+            i ++;
+        }
+    }
+
+    private void fusao(int seq) {
+        Arquivo particao1 = new Arquivo("particao1");
+        Arquivo particao2 = new Arquivo("particao2");
+
+        int seq_inicial = seq, i, j, len = filesize();
+        Registro reg_i = new Registro(0), reg_j = new Registro(0);
+
+        i = j = 0;
+
+        seekArq(0);
+        particao1.seekArq(0);
+        particao2.seekArq(0);
+
+        reg_i.leDoArq(particao1.arquivo);
+        reg_j.leDoArq(particao2.arquivo);
+
+        while (seq <= len / 2) {
+
+            while (i < seq && j < seq) {
+                if (reg_i.getNumero() < reg_j.getNumero()) {
+                    reg_i.gravaNoArq(this.arquivo);
+                    reg_i.leDoArq(particao1.arquivo);
+                    i ++;
+                } else {
+                    reg_j.gravaNoArq(this.arquivo);
+                    reg_j.leDoArq(particao2.arquivo);
+                    j ++;
+                }
+            }
+
+            while (i < seq) {
+                reg_i.gravaNoArq(this.arquivo);
+                reg_i.leDoArq(particao1.arquivo);
+                i ++;
+            }
+
+            while (j < seq) {
+                reg_j.gravaNoArq(this.arquivo);
+                reg_j.leDoArq(particao2.arquivo);
+                j ++;
+            }
+
+            seq += seq_inicial;
+        }
+    }
+
+    public void mergePrimeiraImplementacao() {
+        // só funciona para tamanhos múltiplos de 2
+        int seq = 1, tl = filesize();
+
+        while (seq < tl) {
+            particaoMergeSort();
+            fusao(seq);
+
+            seq *= 2;
+        }
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);
