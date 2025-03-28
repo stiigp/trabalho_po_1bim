@@ -108,31 +108,6 @@ public class Main {
 //        ll.insert(69);
 //        ll.insert(0);
 
-
-        // essa aqui também foi gerada pelo chat, para testar o bucketSort, que foi feito para números decimais
-        // menores que 1
-//        ll.insert(0.84);
-//        ll.insert(0.17);
-//        ll.insert(0.96);
-//        ll.insert(0.50);
-//        ll.insert(0.34);
-//        ll.insert(0.12);
-//        ll.insert(0.67);
-//        ll.insert(0.89);
-//        ll.insert(0.23);
-//        ll.insert(0.78);
-//        ll.insert(0.91);
-//        ll.insert(0.10);
-//        ll.insert(0.56);
-//        ll.insert(0.44);
-//        ll.insert(0.35);
-//        ll.insert(0.29);
-//        ll.insert(0.60);
-//        ll.insert(0.80);
-//        ll.insert(0.05);
-//        ll.insert(0.38);
-
-
         ll.insert(15);
         ll.insert(13);
         ll.insert(2);
@@ -143,11 +118,12 @@ public class Main {
 
 //        ll.quickSort(0, ll.len());
 //        ll.mergeSort(0, ll.len() - 1);
-        ll.heapSort();
+//        ll.quickCPRec(ll.getHead(), ll.getEnd(), 0, ll.len() - 1);
+        ll.quickCPIter();
         ll.print();
     }
 
-    public static void main(String[] args) {
+    public void ordenaArquivo() {
         Arquivo arquivo = new Arquivo("arquivo");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
@@ -176,6 +152,12 @@ public class Main {
 //        arquivo.bucketSort();
 //        arquivo.exibeArq();
 //        System.out.println(arquivo.filesize());
+    }
+
+    public static void main(String[] args) {
+        Main main = new Main();
+
+        main.sortsLinkedList();
 
     }
 }

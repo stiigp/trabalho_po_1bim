@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 public class LinkedList {
 
     private NoLista head, end;
@@ -1132,6 +1134,109 @@ public class LinkedList {
             fusaoMergeSort(ll1, ll2, seq);
 
             seq *= 2;
+        }
+    }
+
+    public void quickCPRec(NoLista pini, NoLista pfim, int ini, int fim) {
+        int pivo = pini.getValor(), temp, i = ini, j = fim;
+        NoLista pi = pini, pj = pfim;
+
+        while (i < j) {
+            while (pi.getValor() < pivo) {
+                pi = pi.getProx();
+                i ++;
+            }
+
+            while (pj.getValor() > pivo) {
+                pj = pj.getAnt();
+                j --;
+            }
+
+
+            if (i <= j) {
+                temp = pi.getValor();
+                pi.setValor(pj.getValor());
+                pj.setValor(temp);
+
+                pi = pi.getProx();
+                i ++;
+                pj = pj.getAnt();
+                j --;
+            }
+        }
+
+        if (ini < j) {
+            quickCPRec(pini, pj, ini, j);
+        }
+
+        if (i < fim) {
+            quickCPRec(pi, pfim, i, fim);
+        }
+
+    }
+
+    public void quickCPIter() {
+        PilhaNoLista p_ini = new PilhaNoLista();
+        PilhaNoLista p_fim = new PilhaNoLista();
+        PilhaPair pilhaPair = new PilhaPair();
+        Pair pair;
+
+        NoLista no_i, no_j, no_ini, no_fim;
+
+        int pivo, temp, ini = 0, fim = this.len() - 1, i, j;
+
+        p_ini.push(this.head);
+        p_fim.push(this.end);
+        pilhaPair.push(ini, fim);
+
+        while (!p_ini.isEmpty()) {
+            pair = pilhaPair.pop().getPair();
+            ini = pair.getFirst();
+            fim = pair.getSecond();
+
+            no_ini = p_ini.pop(); no_fim = p_fim.pop();
+
+            no_i = no_ini; no_j = no_fim;
+            pivo = no_ini.getValor();
+
+            i = ini; j = fim;
+            while (i < j) {
+                while (no_i.getValor() < pivo) {
+                    i ++;
+                    no_i = no_i.getProx();
+                }
+
+                while (no_j.getValor() > pivo) {
+                    j --;
+                    no_j = no_j.getAnt();
+                }
+
+                if (i <= j) {
+                    temp = no_i.getValor();
+                    no_i.setValor(no_j.getValor());
+                    no_j.setValor(temp);
+
+                    no_i = no_i.getProx();
+                    no_j = no_j.getAnt();
+
+                    i ++;
+                    j --;
+                }
+            }
+
+            if (ini < j) {
+                p_ini.push(no_ini);
+                p_fim.push(no_j);
+
+                pilhaPair.push(ini, j);
+            }
+
+            if (i < fim) {
+                p_ini.push(no_i);
+                p_fim.push(no_fim);
+
+                pilhaPair.push(i, fim);
+            }
         }
     }
 }
