@@ -127,6 +127,9 @@ public class Main {
         Arquivo arquivo = new Arquivo("arquivo");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
+//        arquivo.geraArquivoRandomico(64);
+//        arquivo.mergeIterativo();
+        arquivo.exibeArq();
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();
@@ -145,7 +148,7 @@ public class Main {
 
 //        arquivo.geraArquivoRandomico(64);
 //        arquivo.quickSemPivo();
-        arquivo.exibeArq();
+//        arquivo.exibeArq();
 //        arquivo.bucketSort();
 
 //        arquivo.geraArquivoRandomico(1328);
@@ -157,7 +160,7 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
 
-        main.sortsLinkedList();
-
+//        main.sortsLinkedList();
+        main.ordenaArquivo();
     }
 }

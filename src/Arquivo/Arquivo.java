@@ -1164,6 +1164,95 @@ public class Arquivo
         }
     }
 
+    public void mergeIterativo() {
+        PilhaPair pilhaPair = new PilhaPair();
+        Pair pair1, pair2;
+        FilaPair filaPair = new FilaPair();
+        int ini = 0, fim = this.filesize() - 1, meio;
+
+        pilhaPair.push(ini, fim);
+
+        while (pilhaPair.getInicio() != null) {
+            pair1 = pilhaPair.pop().getPair();
+
+            if (pair1.getFirst() == pair1.getSecond())
+                filaPair.enqueue(pair1.getFirst(), pair1.getSecond());
+
+            else {
+                meio = (pair1.getFirst() + pair1.getSecond()) / 2;
+                pilhaPair.push(meio + 1, pair1.getSecond());
+                pilhaPair.push(pair1.getFirst(), meio);
+            }
+        }
+
+        while (filaPair.getIni() != null) {
+            pair1 = filaPair.dequeue();
+            if (filaPair.getIni() != null) {
+                pair2 = filaPair.dequeue();
+
+                // isso aqui é feito para garantir que as sublistas mescladas sejam adjacentes
+                if (pair1.getSecond() + 1 != pair2.getFirst()) {
+                    filaPair.enqueue(pair1.getFirst(), pair1.getSecond());
+                    pair1 = pair2;
+                    pair2 = filaPair.dequeue();
+                }
+
+                fusaoIterativo(pair1, pair2);
+
+                filaPair.enqueue(pair1.getFirst(), pair2.getSecond());
+            }
+        }
+
+    }
+
+    public void fusaoIterativo(Pair pair1, Pair pair2) {
+        Arquivo arq_aux = new Arquivo("arq_aux");
+        arq_aux.seekArq(0);
+        Registro reg_i = new Registro(0), reg_j = new Registro(0);
+        int i = pair1.getFirst(), j = pair2.getFirst();
+
+        while (i <= pair1.getSecond() && j <= pair2.getSecond()) {
+            seekArq(i);
+            reg_i.leDoArq(this.arquivo);
+
+            seekArq(j);
+            reg_j.leDoArq(this.arquivo);
+
+            if (reg_i.getNumero() < reg_j.getNumero()) {
+                reg_i.gravaNoArq(arq_aux.arquivo);
+                i ++;
+            } else {
+                reg_j.gravaNoArq(arq_aux.arquivo);
+                j ++;
+            }
+        }
+
+        seekArq(i);
+        while (i <= pair1.getSecond()) {
+            reg_i.leDoArq(this.arquivo);
+            reg_i.gravaNoArq(arq_aux.arquivo);
+            i ++;
+        }
+
+        seekArq(j);
+        while (j <= pair2.getSecond()) {
+            reg_j.leDoArq(this.arquivo);
+            reg_j.gravaNoArq(arq_aux.arquivo);
+            j ++;
+        }
+
+        arq_aux.seekArq(0);
+        i = pair1.getFirst();
+        seekArq(i);
+
+        while (i <= pair2.getSecond()) {
+            reg_i.leDoArq(arq_aux.arquivo);
+            reg_i.gravaNoArq(this.arquivo);
+
+            i ++;
+        }
+    }
+
     public void geraArquivoOrdenado(int nRegistros) {
         for (int i = 0; i < nRegistros; i ++) {
             Registro reg = new Registro(i);
