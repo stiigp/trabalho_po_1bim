@@ -128,8 +128,10 @@ public class Main {
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
 //        arquivo.geraArquivoRandomico(64);
+//        arquivo.bucketSort();
+//        arquivo.exibeArq();
 //        arquivo.mergeIterativo();
-        arquivo.exibeArq();
+//        arquivo.exibeArq();
 //        arquivo.insercaoDireta();
 //        arquivo.bubbleSort();
 //        arquivo.selectionSort();

@@ -166,6 +166,35 @@ public class Arquivo
         }
     }
 
+    private void bubbleSortBucket() {
+        Registro reg_i = new Registro(0), reg_ant = new Registro(0);
+        int i, len = filesize();
+        boolean trocou = true;
+
+        // identico ao bubble sort mas não inicia comp ou mov
+        // feito pra gerar a tabela do jeito certo no bucket
+
+        while (trocou) {
+            trocou = false;
+
+            for (i = 0; i < len - 1; i ++) {
+                seekArq(i);
+                reg_ant.leDoArq(this.arquivo);
+                reg_i.leDoArq(this.arquivo);
+
+                if (reg_ant.getNumero() > reg_i.getNumero()) {
+                    trocou = true;
+                    mov += 2;
+                    seekArq(i);
+                    reg_i.gravaNoArq(this.arquivo);
+                    reg_ant.gravaNoArq(this.arquivo);
+                }
+                comp ++;
+            }
+            len --;
+        }
+    }
+
     public void selectionSort() {
         Registro reg_i = new Registro(0), pointer_j = new Registro(0), pointer_menor = new Registro(0);
         int menor, pos_menor, i, j;
@@ -260,7 +289,7 @@ public class Arquivo
     public void heapSort() {
         int tl = filesize(), pai, fe, fd, maior_f;
         Registro reg_fe = new Registro(0), reg_fd = new Registro(0), reg_pai = new Registro(0), reg_maior_f = new Registro(0);
-
+        initComp(); initMov();
 
         while (tl > 1) {
             pai = tl / 2 - 1;
@@ -402,6 +431,8 @@ public class Arquivo
     public void shellSort() {
         int len = this.filesize(), gap = 1, i, j;
         Registro reg_i = new Registro(0), reg_aux = new Registro(0);
+        initMov();
+        initComp();
 
         while (gap * 2 + 1 < len)
             gap = gap * 2 + 1;
@@ -604,7 +635,6 @@ public class Arquivo
     }
 
     public void mergeSort(int ini, int fim) {
-        initComp(); initMov();
 
         int meio = (ini + fim) / 2;
         if (fim - ini > 1) {
@@ -782,6 +812,8 @@ public class Arquivo
         // bucket sort originalmente foi pensado para números decimais entre 0 e 1
         // aqui estou adaptando para inteiros, gerando um bucket para cada intervalo de 10 valores do conjunto
 
+        initMov(); initComp();
+
         int maior = max();
         int i, tamanhoVetor = (maior) / 10 + 1, pos;
         Arquivo[] vet = new Arquivo[tamanhoVetor];
@@ -801,7 +833,7 @@ public class Arquivo
             pos = reg.getNumero() / 10;
             reg.gravaNoArq(vet[pos].arquivo);
 
-            System.out.println(reg.getNumero());
+//            System.out.println(reg.getNumero());
 
             reg.leDoArq(this.arquivo);
         }
@@ -810,13 +842,13 @@ public class Arquivo
 
         reg.gravaNoArq(vet[pos].arquivo);
 
-        System.out.println(reg.getNumero());
+//        System.out.println(reg.getNumero());
 
         seekArq(0);
 
         for (i = 0; i < tamanhoVetor; i ++) {
             vet[i].seekArq(0);
-            vet[i].bubbleSort();
+            vet[i].bubbleSortBucket();
 
             vet[i].seekArq(0);
             reg.leDoArq(vet[i].arquivo);
@@ -1030,8 +1062,9 @@ public class Arquivo
 
             while (i < j && reg_i.getNumero() <= reg_j.getNumero()) {
                 comp ++;
-                reg_i.leDoArq(this.arquivo);
                 i ++;
+                seekArq(i);
+                reg_i.leDoArq(this.arquivo);
             }
 
             if (i < j) {
@@ -1064,17 +1097,17 @@ public class Arquivo
             }
         }
 
-        if (i < fim)
+        if (fim > j + 1)
             particionaSemPivo(i + 1, fim);
-        if (i < ini)
-            particiona(ini, i - 1);
+        if (ini < i - 1)
+            particionaSemPivo(ini, i - 1);
     }
 
     public void quickSemPivo() {
         initMov(); initComp();
-        int ini = 0, fim = filesize();
+        int ini = 0, fim = filesize() - 1;
 
-        particiona(ini, fim);
+        particionaSemPivo(ini, fim);
     }
 
     private void particaoMergeSort() {
@@ -1097,12 +1130,14 @@ public class Arquivo
             reg.leDoArq(this.arquivo);
             reg.gravaNoArq(particao1.arquivo);
             i ++;
+            mov ++;
         }
 
         while (i < len) {
             reg.leDoArq(this.arquivo);
             reg.gravaNoArq(particao2.arquivo);
             i ++;
+            mov ++;
         }
     }
 
@@ -1134,18 +1169,22 @@ public class Arquivo
                     reg_j.leDoArq(particao2.arquivo);
                     j ++;
                 }
+                comp ++;
+                mov ++;
             }
 
             while (i < seq) {
                 reg_i.gravaNoArq(this.arquivo);
                 reg_i.leDoArq(particao1.arquivo);
                 i ++;
+                mov ++;
             }
 
             while (j < seq) {
                 reg_j.gravaNoArq(this.arquivo);
                 reg_j.leDoArq(particao2.arquivo);
                 j ++;
+                mov ++;
             }
 
             seq += seq_inicial;
@@ -1153,6 +1192,8 @@ public class Arquivo
     }
 
     public void mergePrimeiraImplementacao() {
+
+        initComp(); initMov();
         // só funciona para tamanhos múltiplos de 2
         int seq = 1, tl = filesize();
 
