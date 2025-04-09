@@ -1,3 +1,5 @@
+package Arquivo;
+
 import Arquivo.Arquivo;
 
 import java.io.IOException;
@@ -24,7 +26,13 @@ public class Tabela {
 
 
     public void geraTabela() {
-        Arquivo arq = new Arquivo("arquivo");
+        Arquivo arqRand = new Arquivo("arquivoRand");
+        Arquivo auxRand = new Arquivo("arquivoAuxRand");
+        Arquivo arqRev = new Arquivo("arquivoReverso");
+        Arquivo auxRev = new Arquivo("arquivoAuxReverso");
+        Arquivo arqOrd = new Arquivo("arquivoOrdenado");
+
+
 
 
 
