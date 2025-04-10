@@ -1,4 +1,5 @@
 import Arquivo.Arquivo;
+import Arquivo.Tabela;
 
 public class Main {
 
@@ -128,6 +129,8 @@ public class Main {
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
 //        arquivo.geraArquivoRandomico(64);
+//        arquivo.shellSort();
+        arquivo.exibeArq();
 //        arquivo.bucketSort();
 //        arquivo.exibeArq();
 //        arquivo.mergeIterativo();
@@ -161,8 +164,11 @@ public class Main {
 
     public static void main(String[] args) {
         Main main = new Main();
-
+        Tabela table = new Tabela();
+        table.geraTabela();
+//        main.ordenaArquivo();
 //        main.sortsLinkedList();
-        main.ordenaArquivo();
+
+
     }
 }

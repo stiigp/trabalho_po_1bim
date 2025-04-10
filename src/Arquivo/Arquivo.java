@@ -129,6 +129,7 @@ public class Arquivo
                     reg_j.leDoArq(this.arquivo);
                 }
             }
+            mov ++; comp ++;
 
             seekArq(j + 1);
             reg_i.gravaNoArq(this.arquivo);
@@ -312,14 +313,18 @@ public class Arquivo
                         reg_maior_f = reg_fd;
                         maior_f = fd;
                     }
+                    comp ++;
                 }
+                comp ++;
 
                 if (reg_maior_f.getNumero() > reg_pai.getNumero()) {
                     seekArq(maior_f);
                     reg_pai.gravaNoArq(arquivo);
                     seekArq(pai);
                     reg_maior_f.gravaNoArq(arquivo);
+                    mov += 2;
                 }
+                comp ++;
 
                 pai --;
             }
@@ -333,6 +338,8 @@ public class Arquivo
             reg_maior_f.gravaNoArq(arquivo);
             seekArq(tl - 1);
             reg_pai.gravaNoArq(arquivo);
+
+            mov += 2;
 
             tl --;
         }
@@ -464,6 +471,7 @@ public class Arquivo
                         reg_aux.leDoArq(this.arquivo);
                     }
                 }
+                comp ++;
 
                 seekArq(j + gap);
                 reg_i.gravaNoArq(this.arquivo);
@@ -474,7 +482,6 @@ public class Arquivo
 
             gap /= 2;
         }
-
     }
 
     public void combSort() {
@@ -819,7 +826,7 @@ public class Arquivo
         Arquivo[] vet = new Arquivo[tamanhoVetor];
         Registro reg = new Registro(0);
 
-        System.out.println(tamanhoVetor);
+//        System.out.println(tamanhoVetor);
 
         for (i = 0; i < tamanhoVetor; i ++) {
             String nome = "bucket" + i;
@@ -849,14 +856,18 @@ public class Arquivo
         for (i = 0; i < tamanhoVetor; i ++) {
             vet[i].seekArq(0);
             vet[i].bubbleSortBucket();
+            mov += vet[i].getMov();
+            comp += vet[i].getComp();
 
             vet[i].seekArq(0);
             reg.leDoArq(vet[i].arquivo);
             while (!(vet[i].eof())) {
                 reg.gravaNoArq(arquivo);
+                mov ++;
                 reg.leDoArq(vet[i].arquivo);
             }
             reg.gravaNoArq(arquivo);
+            mov ++;
         }
     }
 
