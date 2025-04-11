@@ -128,7 +128,7 @@ public class Main {
         Arquivo arquivo = new Arquivo("arquivo");
 //        arquivo.geraArquivoOrdenado(64);
 //        arquivo.geraArquivoReverso(64);
-//        arquivo.geraArquivoRandomico(64);
+//        arquivo.geraArquivoRandomico(65);
 //        arquivo.shellSort();
         arquivo.exibeArq();
 //        arquivo.bucketSort();
